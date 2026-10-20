@@ -10,7 +10,6 @@ use function curl_init;
 use function curl_setopt;
 use function get_object_vars;
 use function http_build_query;
-use function intval;
 use function is_int;
 use function is_string;
 use function json_decode;
@@ -48,9 +47,9 @@ final class App
 	private string $accessToken = '';
 
 	/**
-	 * Location ID, 1 - USA, 2 - EU
+	 * Data center location, USA by default
 	 */
-	private int $locationId = 1;
+	private Location $location = Location::Us;
 
 	/**
 	 * cURL function execution timeout ( in seconds )
@@ -126,15 +125,17 @@ final class App
 	 */
 	public function setLocationId(string|int $locationid): void
 	{
-		$this->locationId = intval($locationid);
+		$this->location = Location::fromId($locationid);
 	}
 
-	/**
-	 * Get location ID
-	 */
-	public function getLocationId(): int
+	public function setLocation(Location $location): void
 	{
-		return $this->locationId;
+		$this->location = $location;
+	}
+
+	public function getLocation(): Location
+	{
+		return $this->location;
 	}
 
 	/**
@@ -166,7 +167,7 @@ final class App
 	 */
 	public function getTokenFromCode(
 		string $code,
-		string|int $locationid,
+		Location $location,
 	): array
 	{
 		$this->validParams(['appKey' => $this->appKey, 'appSecret' => $this->appSecret]);
@@ -177,7 +178,7 @@ final class App
 			'code' => $code,
 		];
 
-		$host = Config::getApiHostByLocationId(intval($locationid));
+		$host = $location->value;
 
 		$url = $host . '/oauth2_token?' . http_build_query($params);
 

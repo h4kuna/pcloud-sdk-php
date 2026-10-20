@@ -162,7 +162,7 @@ final class FolderTest extends TestCase
 		array $params,
 	): string
 	{
-		$expected = Config::getApiHostByLocationId($this->pCloudApp->getLocationId()) . $method;
+		$expected = $this->pCloudApp->getLocation()->value . $method;
 
 		if ($params !== []) {
 			$expected .= '?' . http_build_query($params);

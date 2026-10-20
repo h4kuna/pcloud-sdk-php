@@ -17,7 +17,7 @@
 			$app->setAppSecret($appSecret);
 			$app->setRedirectURI($redirect_uri);
 
-			$token = $app->getTokenFromCode($_GET["code"], $_GET['locationid']);
+			$token = $app->getTokenFromCode($_GET["code"], pCloud\Sdk\Location::fromId($_GET['locationid']));
 
 			echo "Token: " . $token["access_token"] . "</br>";
 			echo "Locationid: " . $token["locationid"];

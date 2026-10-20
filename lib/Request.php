@@ -44,7 +44,7 @@ final class Request
 	 */
 	public function __construct(App $app)
 	{
-		$this->host = Config::getApiHostByLocationId($app->getLocationId());
+		$this->host = $app->getLocation()->value;
 		$this->globalParams = [
 			'access_token' => $app->getAccessToken(),
 		];

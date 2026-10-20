@@ -50,7 +50,7 @@ final class UserTest extends TestCase
 
 	public function testUserInfo(): void
 	{
-		$expected = Config::getApiHostByLocationId($this->pCloudApp->getLocationId()) . 'userinfo';
+		$expected = $this->pCloudApp->getLocation()->value . 'userinfo';
 		$query = $this->instance->getUserInfo();
 
 		self::assertRequestUrl($expected, $query);
