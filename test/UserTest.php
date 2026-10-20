@@ -30,7 +30,7 @@ final class UserTest extends TestCase
 		$this->pCloudApp->setAccessToken($access_token);
 		$this->pCloudApp->setLocationId($locationid);
 
-		pCloud\Sdk\Config::$curllib = "pCloud\Sdk\TestCurl";
+		pCloud\Sdk\Config::$curlLib = "pCloud\Sdk\TestCurl";
 		$this->instance = new pCloud\Sdk\User($this->pCloudApp);
 	}
 

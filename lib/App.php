@@ -24,22 +24,22 @@ final class App
 	/**
 	 * Redirect URL. It's usually set in https://docs.pcloud.com/my_apps/
 	 */
-	private string $redirect_uri = '';
+	private string $redirectUri = '';
 
 	/**
 	 * The access token, you will receive one if you call getTokenFromCode()
 	 */
-	private string $access_token = '';
+	private string $accessToken = '';
 
 	/**
 	 * Location ID, 1 - USA, 2 - EU
 	 */
-	private int $locationid = 1;
+	private int $locationId = 1;
 
 	/**
 	 * cURL function execution timeout ( in seconds )
 	 */
-	private int $curl_exec_timeout = 3600;
+	private int $curlExecTimeout = 3600;
 
 	/**
 	 * Set App key
@@ -78,7 +78,7 @@ final class App
 	 */
 	public function setRedirectURI(string $redirect_uri): void
 	{
-		$this->redirect_uri = trim($redirect_uri);
+		$this->redirectUri = trim($redirect_uri);
 	}
 
 	/**
@@ -86,7 +86,7 @@ final class App
 	 */
 	public function getRedirectURI(): string
 	{
-		return $this->redirect_uri;
+		return $this->redirectUri;
 	}
 
 	/**
@@ -94,7 +94,7 @@ final class App
 	 */
 	public function setAccessToken(string $access_token): void
 	{
-		$this->access_token = trim($access_token);
+		$this->accessToken = trim($access_token);
 	}
 
 	/**
@@ -102,7 +102,7 @@ final class App
 	 */
 	public function getAccessToken(): string
 	{
-		return $this->access_token;
+		return $this->accessToken;
 	}
 
 	/**
@@ -110,7 +110,7 @@ final class App
 	 */
 	public function setLocationId(string|int $locationid): void
 	{
-		$this->locationid = intval($locationid);
+		$this->locationId = intval($locationid);
 	}
 
 	/**
@@ -118,7 +118,7 @@ final class App
 	 */
 	public function getLocationId(): int
 	{
-		return $this->locationid;
+		return $this->locationId;
 	}
 
 	/**
@@ -136,8 +136,8 @@ final class App
 			"response_type" => "code"
 		);
 
-		if ($this->redirect_uri !== '') {
-			$params["redirect_uri"] = $this->redirect_uri;
+		if ($this->redirectUri !== '') {
+			$params["redirect_uri"] = $this->redirectUri;
 		}
 
 		return "https://my.pcloud.com/oauth2/authorize?" . http_build_query($params);
@@ -197,7 +197,7 @@ final class App
 	 */
 	public function setCurlExecutionTimeout(int $timeout): void
 	{
-		$this->curl_exec_timeout = abs($timeout);
+		$this->curlExecTimeout = abs($timeout);
 	}
 
 	/**
@@ -205,7 +205,7 @@ final class App
 	 */
 	public function getCurlExecutionTimeout(): int
 	{
-		return $this->curl_exec_timeout;
+		return $this->curlExecTimeout;
 	}
 
 	/**

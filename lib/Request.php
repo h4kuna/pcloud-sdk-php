@@ -102,7 +102,7 @@ final class Request
 	 */
 	private function _buildCurl(string $endPoint): Curl
 	{
-		$curl = new Config::$curllib($endPoint);
+		$curl = new Config::$curlLib($endPoint);
 
 		$curl->setOption(CURLOPT_USERAGENT, "pCloud PHP SDK");
 		$curl->setOption(CURLOPT_SSL_VERIFYPEER, false);

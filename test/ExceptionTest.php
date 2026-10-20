@@ -28,12 +28,12 @@ final class ExceptionTest extends TestCase
 		$this->pCloudApp->setAccessToken($access_token);
 		$this->pCloudApp->setLocationId($locationid);
 
-		pCloud\Sdk\Config::$curllib = "ErrorCurl";
+		pCloud\Sdk\Config::$curlLib = "ErrorCurl";
 	}
 
 	public function tearDown(): void
 	{
-		pCloud\Sdk\Config::$curllib = "pCloud\Sdk\Curl";
+		pCloud\Sdk\Config::$curlLib = "pCloud\Sdk\Curl";
 	}
 
 	/**

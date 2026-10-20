@@ -16,7 +16,7 @@ final class Config {
 	/**
 	 * @var class-string<Curl>
 	 */
-	public static string $curllib = "pCloud\Sdk\Curl";
+	public static string $curlLib = "pCloud\Sdk\Curl";
 	/**
 	 * @var int<1, max>
 	 */
