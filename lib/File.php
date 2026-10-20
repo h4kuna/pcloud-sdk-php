@@ -55,13 +55,14 @@ class File
 
 		$response = $this->request->get("getfilelink", $params);
 
-		if (property_exists($response, 'hosts')) {
-			$link = "https://" . $response->hosts[0] . $response->path;
-		} else {
-			throw new Exception("Failed to get file link!");
+		$hosts = $response->hosts ?? null;
+		$path = $response->path ?? null;
+
+		if (is_array($hosts) && is_string($hosts[0] ?? null) && is_string($path)) {
+			return "https://" . $hosts[0] . $path;
 		}
 
-		return $link;
+		throw new Exception("Failed to get file link!");
 	}
 
 	/**
@@ -133,8 +134,13 @@ class File
 
 		$upload = $this->_createUpload();
 
+		$uploadId = $upload->uploadid ?? null;
+		if (!is_int($uploadId)) {
+			throw new Exception('File -> upload -> "createUpload" not returning the expected data!');
+		}
+
 		$params = array(
-			"uploadid" => $upload->uploadid,
+			"uploadid" => $uploadId,
 			"uploadoffset" => 0
 		);
 
@@ -170,7 +176,7 @@ class File
 		}
 
 		if (@fclose($file)) {
-			return $this->_save(intval($upload->uploadid), $filename, $folderId);
+			return $this->_save($uploadId, $filename, $folderId);
 		}
 
 		return new stdClass();
@@ -181,15 +187,18 @@ class File
 	 *
 	 * @param int $fileId
 	 *
-	 * @return stdClass
+	 * @return bool|stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function delete(int $fileId): stdClass
+	public function delete(int $fileId)
 	{
 		$response = $this->request->get("deletefile", array("fileid" => $fileId));
 
-		return property_exists($response, 'metadata') ? $response->metadata->isdeleted : $response;
+		$metadata = $response->metadata ?? null;
+		$isDeleted = $metadata instanceof stdClass ? ($metadata->isdeleted ?? null) : null;
+
+		return is_bool($isDeleted) ? $isDeleted : $response;
 	}
 
 	/**

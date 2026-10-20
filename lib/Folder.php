@@ -98,14 +98,16 @@ class Folder
 
 		while (($folderName = array_pop($path_parts))) { /* current directory */
 
-			$folderItems = $this->getContent(intval($currentFolderId));
+			$folderItems = $this->getContent($currentFolderId);
 
 			foreach ($folderItems as $item) {
 
 				$directory = (array)$item;
 				if (isset($directory['isfolder']) && boolval($directory['isfolder']) === true) {
-					if (isset($directory['name']) && $directory['name'] !== '' && strncmp($folderName, $directory['name'], strlen($folderName)) === 0) {
-						$currentFolderId = $directory['folderid'];
+					$name = $directory['name'] ?? null;
+					$folderId = $directory['folderid'] ?? null;
+					if (is_string($name) && $name !== '' && is_int($folderId) && strncmp($folderName, $name, strlen($folderName)) === 0) {
+						$currentFolderId = $folderId;
 						break;
 					}
 				}
@@ -118,7 +120,7 @@ class Folder
 	/**
 	 * List root folders
 	 *
-	 * @return array<int, stdClass>
+	 * @return array<mixed>
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -132,7 +134,7 @@ class Folder
 	 *
 	 * @param int $folderId
 	 *
-	 * @return array<int, stdClass>
+	 * @return array<mixed>
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -140,7 +142,14 @@ class Folder
 	{
 		$folderMetadata = $this->getMetadata($folderId);
 
-		return property_exists($folderMetadata, 'metadata') ? $folderMetadata->metadata->contents : $folderMetadata;
+		$metadata = $folderMetadata->metadata ?? null;
+		$contents = $metadata instanceof stdClass ? ($metadata->contents ?? null) : null;
+
+		if (!is_array($contents)) {
+			throw new Exception("Failed to get folder content!");
+		}
+
+		return $contents;
 	}
 
 	/**
@@ -164,7 +173,7 @@ class Folder
 
 		$response = $this->request->get("createfolder", $params);
 
-		return property_exists($response, 'metadata') ? $response->metadata->folderid : $response;
+		return $this->folderIdOrResponse($response);
 	}
 
 	/**
@@ -190,7 +199,7 @@ class Folder
 
 		$response = $this->request->get("renamefolder", $params);
 
-		return property_exists($response, 'metadata') ? $response->metadata->folderid : $response;
+		return $this->folderIdOrResponse($response);
 	}
 
 	/**
@@ -212,7 +221,7 @@ class Folder
 
 		$response = $this->request->get("renamefolder", $params);
 
-		return property_exists($response, 'metadata') ? $response->metadata->folderid : $response;
+		return $this->folderIdOrResponse($response);
 	}
 
 	/**
@@ -220,15 +229,18 @@ class Folder
 	 *
 	 * @param int $folderId
 	 *
-	 * @return stdClass
+	 * @return bool|stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function delete(int $folderId): stdClass
+	public function delete(int $folderId)
 	{
 		$response = $this->request->get("deletefolder", array("folderid" => $folderId));
 
-		return property_exists($response, 'metadata') ? $response->metadata->isdeleted : $response;
+		$metadata = $response->metadata ?? null;
+		$isDeleted = $metadata instanceof stdClass ? ($metadata->isdeleted ?? null) : null;
+
+		return is_bool($isDeleted) ? $isDeleted : $response;
 	}
 
 	/**
@@ -243,5 +255,20 @@ class Folder
 	public function deleteRecursive(int $folderId): stdClass
 	{
 		return $this->request->get("deletefolderrecursive", array("folderid" => $folderId));
+	}
+
+	/**
+	 * Picks the folder ID from the response metadata
+	 *
+	 * @param stdClass $response
+	 *
+	 * @return stdClass|int Folder ID, or the whole response if it carries none
+	 */
+	private function folderIdOrResponse(stdClass $response)
+	{
+		$metadata = $response->metadata ?? null;
+		$folderId = $metadata instanceof stdClass ? ($metadata->folderid ?? null) : null;
+
+		return is_int($folderId) ? $folderId : $response;
 	}
 }
