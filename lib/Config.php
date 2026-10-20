@@ -13,6 +13,9 @@ class Config {
 	
 	static public $usHost = "https://api.pcloud.com/";
 	static public $euHost = "https://eapi.pcloud.com/";
+	/**
+	 * @var class-string<Curl>
+	 */
 	static public $curllib = "pCloud\Sdk\Curl";
 	static public $filePartSize = 10485760;
 

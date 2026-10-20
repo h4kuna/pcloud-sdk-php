@@ -120,7 +120,7 @@ class File
 		$path = str_replace(array("\\", "_"), DIRECTORY_SEPARATOR, $path);
 		$parts = explode(DIRECTORY_SEPARATOR, $path);
 
-		if (!$filename) {
+		if ($filename === null || $filename === '') {
 			$filename = end($parts);
 		}
 

@@ -28,20 +28,6 @@ class Request
 	private $globalParams;
 
 	/**
-	 * cUrl connection is in this variable.
-	 *
-	 * @var Curl $curlConn
-	 */
-	private $curlConn = null;
-
-	/**
-	 * Here will be located the final cUrl URL endpoint
-	 *
-	 * @var string $curlEndPoint
-	 */
-	private $curlEndPoint = '';
-
-	/**
 	 * cURL function execution timeout ( in seconds )
 	 *
 	 * @var int $curlExecutionTimeout
@@ -76,15 +62,9 @@ class Request
 	 */
 	public function get(string $method, ?array $params = array()): stdClass
 	{
-		if (!is_null($this->curlConn)) {
-			$this->curlConn->__destruct();
-			$this->curlConn = null;
-		}
+		$curl = $this->_buildCurl($this->_prepareURL($method, array_merge($this->globalParams, $params)));
 
-		$this->curlEndPoint = $this->_prepareURL($method, array_merge($this->globalParams, $params));
-		$this->_buildCurl();
-
-		return $this->curlConn->exec();
+		return $curl->exec();
 	}
 
 	/**
@@ -99,20 +79,12 @@ class Request
 	 */
 	public function post(string $method, ?array $params = array()): stdClass
 	{
-		if (!is_null($this->curlConn)) {
-			$this->curlConn->__destruct();
-			$this->curlConn = null;
-		}
+		$curl = $this->_buildCurl($this->_prepareURL($method, $this->globalParams));
 
-		$this->curlEndPoint = $this->_prepareURL($method, $this->globalParams);
-		$this->_buildCurl();
+		$curl->setOption(CURLOPT_CUSTOMREQUEST, "POST");
+		$curl->setOption(CURLOPT_POSTFIELDS, $params);
 
-		if (!is_null($this->curlConn)) {
-			$this->curlConn->setOption(CURLOPT_CUSTOMREQUEST, "POST");
-			$this->curlConn->setOption(CURLOPT_POSTFIELDS, $params);
-		}
-
-		return $this->curlConn->exec();
+		return $curl->exec();
 	}
 
 	/**
@@ -129,38 +101,38 @@ class Request
 	public function put(string $method, string $content, ?array $params = array()): stdClass
 	{
 
-		if (!is_null($this->curlConn)) {
-			$this->curlConn->__destruct();
-			$this->curlConn = null;
-		}
+		$curl = $this->_buildCurl($this->_prepareURL($method, array_merge($this->globalParams, $params)));
 
-		$this->curlEndPoint = $this->_prepareURL($method, array_merge($this->globalParams, $params));
-		$this->_buildCurl();
+		$curl->setOption(CURLOPT_CUSTOMREQUEST, "PUT");
+		$curl->setOption(CURLOPT_POSTFIELDS, $content);
+		$curl->setOption(CURLOPT_HTTPHEADER, array("Content-Type: text/html"));
+		$curl->setOption(CURLOPT_BINARYTRANSFER, true); // TODO: deprecated !
 
-		$this->curlConn->setOption(CURLOPT_CUSTOMREQUEST, "PUT");
-		$this->curlConn->setOption(CURLOPT_POSTFIELDS, $content);
-		$this->curlConn->setOption(CURLOPT_HTTPHEADER, array("Content-Type: text/html"));
-		$this->curlConn->setOption(CURLOPT_BINARYTRANSFER, true); // TODO: deprecated !
-
-		return $this->curlConn->exec();
+		return $curl->exec();
 	}
 
 	/**
 	 * Setup new Curl instance
+	 *
+	 * @param string $endPoint the final cURL URL endpoint
+	 *
+	 * @return Curl
 	 */
-	private function _buildCurl()
+	private function _buildCurl(string $endPoint): Curl
 	{
-		$this->curlConn = new Config::$curllib($this->curlEndPoint);
+		$curl = new Config::$curllib($endPoint);
 
-		$this->curlConn->setOption(CURLOPT_USERAGENT, "pCloud PHP SDK");
-		$this->curlConn->setOption(CURLOPT_SSL_VERIFYPEER, false);
-		$this->curlConn->setOption(CURLOPT_RETURNTRANSFER, true);
+		$curl->setOption(CURLOPT_USERAGENT, "pCloud PHP SDK");
+		$curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+		$curl->setOption(CURLOPT_RETURNTRANSFER, true);
 
 		// The number of seconds to wait while trying to connect. Use 0 to wait indefinitely.
-		$this->curlConn->setOption(CURLOPT_CONNECTTIMEOUT, 20);
+		$curl->setOption(CURLOPT_CONNECTTIMEOUT, 20);
 
 		// The maximum number of seconds to allow cURL functions to execute.
-		$this->curlConn->setOption(CURLOPT_TIMEOUT, $this->curlExecutionTimeout);
+		$curl->setOption(CURLOPT_TIMEOUT, $this->curlExecutionTimeout);
+
+		return $curl;
 	}
 
 	/**
