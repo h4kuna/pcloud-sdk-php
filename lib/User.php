@@ -32,8 +32,6 @@ final class User
 
 	/**
 	 * Get the full user info
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function getUserInfo(): stdClass
 	{
@@ -44,7 +42,6 @@ final class User
 	 * Get ther User ID
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function getUserId(): int
 	{
@@ -55,7 +52,6 @@ final class User
 	 * Get the user Email Address
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function getUserEmail(): string
 	{
@@ -66,7 +62,6 @@ final class User
 	 * Get the used quota
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function getUsedQuota(): int
 	{
@@ -77,7 +72,6 @@ final class User
 	 * Get quota
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function getQuota(): int
 	{
@@ -88,7 +82,6 @@ final class User
 	 * Get user's public links quota
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function getPublicLinkQuota(): int
 	{

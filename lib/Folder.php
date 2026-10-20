@@ -30,7 +30,6 @@ final class Folder
 	 * Get folder meta data
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function getMetadata(int $folderId): stdClass
 	{
@@ -41,7 +40,6 @@ final class Folder
 	 * Search for folder
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function search(string $path): stdClass
 	{
@@ -64,7 +62,6 @@ final class Folder
 	 *
 	 * @return array<mixed>|null
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function listFolder(?string $folder = null): ?array
 	{
@@ -110,7 +107,6 @@ final class Folder
 	 *
 	 * @return array<mixed>
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function listRoot(): array
 	{
@@ -122,7 +118,6 @@ final class Folder
 	 *
 	 * @return array<mixed>
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function getContent(int $folderId): array
 	{
@@ -141,7 +136,6 @@ final class Folder
 	/**
 	 * @return stdClass|int  Folder ID or response Data
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function create(?string $name, ?int $parent = 0): stdClass|int
 	{
@@ -163,7 +157,6 @@ final class Folder
 	 * Rename folder
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function rename(int $folderId, ?string $name): stdClass|int
 	{
@@ -185,7 +178,6 @@ final class Folder
 	 * Move folder
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function move(int $folderId, int $newParent): stdClass|int
 	{
@@ -203,7 +195,6 @@ final class Folder
 	 * Delete folder
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function delete(int $folderId): bool|stdClass
 	{
@@ -219,7 +210,6 @@ final class Folder
 	 * Delete recursive
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function deleteRecursive(int $folderId): stdClass
 	{

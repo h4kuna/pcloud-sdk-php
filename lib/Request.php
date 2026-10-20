@@ -50,7 +50,6 @@ final class Request
 	 * @param array<string, mixed> $params
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function get(string $method, array $params = array()): stdClass
 	{
@@ -65,7 +64,6 @@ final class Request
 	 * @param array<string, mixed>|null $params
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function post(string $method, ?array $params = array()): stdClass
 	{
@@ -83,7 +81,6 @@ final class Request
 	 * @param array<string, mixed> $params
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function put(string $method, string $content, array $params = array()): stdClass
 	{

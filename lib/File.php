@@ -39,7 +39,6 @@ final class File
 	 * Get link ( using File ID )
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function getLink(int $fileId): string
 	{
@@ -66,7 +65,6 @@ final class File
 	 * @param string $destination The destination, where the file will be stored!
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function download(int $fileId, string $destination = ""): bool
 	{
@@ -174,7 +172,6 @@ final class File
 	 * Delete file ( using file ID )
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function delete(int $fileId): bool|stdClass
 	{
@@ -190,7 +187,6 @@ final class File
 	 * Rename file ( using file ID )
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function rename(int $fileId, string $name): stdClass
 	{
@@ -210,7 +206,6 @@ final class File
 	 * Moves file
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function move(int $fileId, int $folderId): stdClass
 	{
@@ -226,7 +221,6 @@ final class File
 	 * Copy file
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function copy(int $fileId, int $folderId): stdClass
 	{
@@ -242,7 +236,6 @@ final class File
 	 * Get file info ( using file ID )
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function getInfo(int $fileId): stdClass
 	{

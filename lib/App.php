@@ -43,8 +43,6 @@ final class App
 
 	/**
 	 * Set App key
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function setAppKey(string $appKey): void
 	{
@@ -53,8 +51,6 @@ final class App
 
 	/**
 	 * Get App key
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function getAppKey(): string
 	{
@@ -63,8 +59,6 @@ final class App
 
 	/**
 	 * Sets app secret
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function setAppSecret(string $appSecret): void
 	{
@@ -73,8 +67,6 @@ final class App
 
 	/**
 	 * Get app secret
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function getAppSecret(): string
 	{
@@ -83,8 +75,6 @@ final class App
 
 	/**
 	 * Set Redirect URL
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function setRedirectURI(string $redirect_uri): void
 	{
@@ -93,8 +83,6 @@ final class App
 
 	/**
 	 * Get Redirect URL
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function getRedirectURI(): string
 	{
@@ -103,8 +91,6 @@ final class App
 
 	/**
 	 * Sets the Access Token
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function setAccessToken(string $access_token): void
 	{
@@ -113,8 +99,6 @@ final class App
 
 	/**
 	 * Returns the Access Token
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function getAccessToken(): string
 	{
@@ -123,8 +107,6 @@ final class App
 
 	/**
 	 * Set location ID
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function setLocationId(string|int $locationid): void
 	{
@@ -133,8 +115,6 @@ final class App
 
 	/**
 	 * Get location ID
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function getLocationId(): int
 	{
@@ -146,7 +126,6 @@ final class App
 	 * from which you will receive auth code.
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function getAuthorizeCodeUrl(): string
 	{
@@ -167,7 +146,6 @@ final class App
 	/**
 	 * @return array{access_token: string, locationid: int}
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function getTokenFromCode(string $code, string|int $locationid): array
 	{
@@ -216,8 +194,6 @@ final class App
 
 	/**
 	 * Sets cURL function execution timeout
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function setCurlExecutionTimeout(int $timeout): void
 	{
@@ -226,8 +202,6 @@ final class App
 
 	/**
 	 * Sets cURL function execution timeout
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function getCurlExecutionTimeout(): int
 	{
@@ -240,7 +214,6 @@ final class App
 	 * @param array<string, string> $params parameter name => value
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	private function validParams(array $params): void
 	{

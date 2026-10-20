@@ -8,23 +8,15 @@ use stdClass;
 
 /**
  * This class is used for testing perposes
- *
- * @noinspection PhpUnused
  */
 final class TestCurl extends Curl
 {
 
-	/**
-	 * @noinspection PhpUnused
-	 */
 	function __construct(string $url)
 	{
 		parent::__construct($url);
 	}
 
-	/**
-	 * @noinspection PhpUnused
-	 */
 	public function exec(): stdClass
 	{
 		$url = curl_getinfo($this->curl, CURLINFO_EFFECTIVE_URL);

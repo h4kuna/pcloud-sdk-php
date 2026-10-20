@@ -48,8 +48,6 @@ class Curl
 
 	/**
 	 * Set cURL option
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function setOption(int $option, mixed $value): void
 	{
@@ -58,8 +56,6 @@ class Curl
 
 	/**
 	 * Add aditional header to be sent with the cURL request
-	 *
-	 * @noinspection PhpUnused
 	 */
 	public function addHeader(string $header): void
 	{
@@ -70,7 +66,6 @@ class Curl
 	 * The main method, executes cURL exec and throws exception if anything fails
 	 *
 	 * @throws Exception
-	 * @noinspection PhpUnused
 	 */
 	public function exec(): stdClass
 	{
