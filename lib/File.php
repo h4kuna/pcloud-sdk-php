@@ -304,12 +304,12 @@ class File
 	 * Upload - write content chunk
 	 *
 	 * @param string $content
-	 * @param array<string, mixed>|null $params
+	 * @param array<string, mixed> $params
 	 *
 	 * @return void
 	 * @throws Exception
 	 */
-	private function _write(string $content, ?array $params): void
+	private function _write(string $content, array $params): void
 	{
 		$this->request->put("upload_write", $content, $params);
 	}

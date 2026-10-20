@@ -54,13 +54,13 @@ class Request
 	 * GET method
 	 *
 	 * @param string $method
-	 * @param array<string, mixed>|null $params
+	 * @param array<string, mixed> $params
 	 *
 	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function get(string $method, ?array $params = array()): stdClass
+	public function get(string $method, array $params = array()): stdClass
 	{
 		$curl = $this->_buildCurl($this->_prepareURL($method, array_merge($this->globalParams, $params)));
 
@@ -92,13 +92,13 @@ class Request
 	 *
 	 * @param string $method
 	 * @param string $content
-	 * @param array<string, mixed>|null $params
+	 * @param array<string, mixed> $params
 	 *
 	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function put(string $method, string $content, ?array $params = array()): stdClass
+	public function put(string $method, string $content, array $params = array()): stdClass
 	{
 
 		$curl = $this->_buildCurl($this->_prepareURL($method, array_merge($this->globalParams, $params)));
