@@ -2,6 +2,7 @@
 
 namespace pCloud\Sdk;
 
+use CurlHandle;
 use InvalidArgumentException;
 use Throwable;
 use stdClass;
@@ -17,7 +18,7 @@ class Curl
 	/**
 	 * Holds the cURL
 	 *
-	 * @var false|resource $curl
+	 * @var CurlHandle $curl
 	 */
 	protected $curl;
 
@@ -32,6 +33,8 @@ class Curl
 	 * Class constructor
 	 *
 	 * @param string $url
+	 *
+	 * @throws Exception
 	 */
 	function __construct(string $url)
 	{
@@ -39,29 +42,24 @@ class Curl
 			throw new InvalidArgumentException("Invalid URL");
 		}
 
-		$this->curl = curl_init($url);
-	}
-
-	/**
-	 * Class destructor
-	 */
-	public function __destruct()
-	{
-		if (is_resource($this->curl)) {
-			curl_close($this->curl);
+		$curl = curl_init($url);
+		if ($curl === false) {
+			throw new Exception("Couldn't initialize cURL");
 		}
+
+		$this->curl = $curl;
 	}
 
 	/**
 	 * Set cURL option
 	 *
-	 * @param string $option
+	 * @param int $option
 	 * @param mixed $value
 	 *
 	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function setOption(string $option, $value): void
+	public function setOption(int $option, $value): void
 	{
 		curl_setopt($this->curl, $option, $value);
 	}
