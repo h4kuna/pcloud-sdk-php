@@ -290,7 +290,7 @@ class File
 	 * Upload - write content chunk
 	 *
 	 * @param string $content
-	 * @param array|null $params
+	 * @param array<string, mixed>|null $params
 	 *
 	 * @return void
 	 * @throws Exception

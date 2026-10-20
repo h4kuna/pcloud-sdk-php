@@ -46,7 +46,7 @@ class FileTest extends TestCase
 	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testGetFileInfo()
+	public function testGetFileInfo(): void
 	{
 		$fileid = 1234;
 
@@ -59,7 +59,7 @@ class FileTest extends TestCase
 	/**
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testGetFileLink()
+	public function testGetFileLink(): void
 	{
 		$fileid = 1234;
 
@@ -72,7 +72,7 @@ class FileTest extends TestCase
 	/**
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testDeleteFile()
+	public function testDeleteFile(): void
 	{
 		$fileid = 1234;
 
@@ -85,7 +85,7 @@ class FileTest extends TestCase
 	/**
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testRenameFile()
+	public function testRenameFile(): void
 	{
 		$fileid = 1234;
 		$name = "fileName";
@@ -99,7 +99,7 @@ class FileTest extends TestCase
 	/**
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testMoveFile()
+	public function testMoveFile(): void
 	{
 		$fileid = 1234;
 		$destination = 12;
@@ -113,7 +113,7 @@ class FileTest extends TestCase
 	/**
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testCopyFile()
+	public function testCopyFile(): void
 	{
 		$fileid = 1234;
 		$destination = 12;
@@ -127,7 +127,7 @@ class FileTest extends TestCase
 	/**
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testDownloadFile()
+	public function testDownloadFile(): void
 	{
 		$fileid = 1234;
 		$destination = sys_get_temp_dir();
@@ -139,12 +139,12 @@ class FileTest extends TestCase
 	}
 
 	/**
-	 * @param $method
-	 * @param $params
+	 * @param string $method
+	 * @param array<string, int|string> $params
 	 *
 	 * @return string
 	 */
-	private function buildExpected($method, $params): string
+	private function buildExpected(string $method, array $params): string
 	{
 		$expected = pCloud\Sdk\Config::getApiHostByLocationId($this->pCloudApp->getLocationId()) . $method;
 

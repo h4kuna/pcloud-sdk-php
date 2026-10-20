@@ -46,7 +46,7 @@ class UserTest extends TestCase
 	/**
 	 * @return void
 	 */
-	public function testUserInfo()
+	public function testUserInfo(): void
 	{
 
 		$expected = pCloud\Sdk\Config::getApiHostByLocationId($this->pCloudApp->getLocationId()) . "userinfo";

@@ -33,7 +33,7 @@ class ExceptionTest extends TestCase
 	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testCreateFolder(?string $name = "testFolder")
+	public function testCreateFolder(?string $name = "testFolder"): void
 	{
 		$this->expectException(Exception::class);
 		$folder = new pCloud\Sdk\Folder($this->pCloudApp);
@@ -48,7 +48,7 @@ class ExceptionTest extends TestCase
 	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testRenameFolder(int $folderId = 0, ?string $name = "testFolder")
+	public function testRenameFolder(int $folderId = 0, ?string $name = "testFolder"): void
 	{
 		$this->expectException(Exception::class);
 		$folder = new pCloud\Sdk\Folder($this->pCloudApp);
@@ -60,7 +60,7 @@ class ExceptionTest extends TestCase
 	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testDeleteFolder($folderId)
+	public function testDeleteFolder(int $folderId): void
 	{
 		$this->expectException(Exception::class);
 		$folder = new pCloud\Sdk\Folder($this->pCloudApp);
@@ -72,7 +72,7 @@ class ExceptionTest extends TestCase
 	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testDeleteRecursiveFolder()
+	public function testDeleteRecursiveFolder(): void
 	{
 		$this->expectException(Exception::class);
 		$folder = new pCloud\Sdk\Folder($this->pCloudApp);
@@ -84,7 +84,7 @@ class ExceptionTest extends TestCase
 	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testGetFileLink($fileId)
+	public function testGetFileLink(int $fileId): void
 	{
 		$this->expectException(Exception::class);
 		$file = new pCloud\Sdk\File($this->pCloudApp);
@@ -96,7 +96,7 @@ class ExceptionTest extends TestCase
 	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testDeleteFile($fileId)
+	public function testDeleteFile(int $fileId): void
 	{
 		$this->expectException(Exception::class);
 		$file = new pCloud\Sdk\File($this->pCloudApp);
@@ -108,7 +108,7 @@ class ExceptionTest extends TestCase
 	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testMoveFile($fileId, $folderId)
+	public function testMoveFile(int $fileId, int $folderId): void
 	{
 		$this->expectException(Exception::class);
 		$file = new pCloud\Sdk\File($this->pCloudApp);
@@ -120,13 +120,16 @@ class ExceptionTest extends TestCase
 	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testGetFileInfo($fileId)
+	public function testGetFileInfo(int $fileId): void
 	{
 		$this->expectException(Exception::class);
 		$file = new pCloud\Sdk\File($this->pCloudApp);
 		$file->getInfo($fileId);
 	}
 
+	/**
+	 * @return array<int, array<int, mixed>>
+	 */
 	public function provideId(): array
 	{
 		return array(
@@ -135,6 +138,9 @@ class ExceptionTest extends TestCase
 		);
 	}
 
+	/**
+	 * @return array<int, array<int, mixed>>
+	 */
 	public function provideRenameData(): array
 	{
 		return array(
@@ -149,6 +155,9 @@ class ExceptionTest extends TestCase
 		);
 	}
 
+	/**
+	 * @return array<int, array<int, mixed>>
+	 */
 	public function provideCreateData(): array
 	{
 		return array(
@@ -160,6 +169,9 @@ class ExceptionTest extends TestCase
 		);
 	}
 
+	/**
+	 * @return array<int, array<int, mixed>>
+	 */
 	public function provideMoveData(): array
 	{
 		return array(
@@ -171,6 +183,9 @@ class ExceptionTest extends TestCase
 		);
 	}
 
+	/**
+	 * @return array<int, array<int, mixed>>
+	 */
 	public function provideUploadData(): array
 	{
 		return array(
@@ -182,6 +197,9 @@ class ExceptionTest extends TestCase
 		);
 	}
 
+	/**
+	 * @return array<int, array<int, mixed>>
+	 */
 	public function provideDownloadData(): array
 	{
 		return array(

@@ -199,7 +199,7 @@ class App
 	 * @param string $code
 	 * @param string|int $locationid
 	 *
-	 * @return array
+	 * @return array{access_token: string, locationid: int}
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -260,7 +260,7 @@ class App
 	/**
 	 * Verifies that none of the given parameters is empty
 	 *
-	 * @param array $params parameter name => value
+	 * @param array<string, string> $params parameter name => value
 	 *
 	 * @return void
 	 * @throws Exception

@@ -33,11 +33,11 @@ class Response
 	/**
 	 * Class constructor
 	 *
-	 * @param $response
-	 * @param $httpCode
+	 * @param string $response
+	 * @param int $httpCode
 	 * @param string $contentType
 	 */
-	function __construct($response, $httpCode, string $contentType)
+	function __construct(string $response, int $httpCode, string $contentType)
 	{
 		$this->response = $response;
 		$this->httpCode = $httpCode;

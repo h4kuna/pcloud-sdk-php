@@ -23,7 +23,7 @@ class Request
 	 * Global parameters, initially access token is in this variable,
 	 * later additional parameters are applied
 	 *
-	 * @var array $globalParams
+	 * @var array<string, mixed> $globalParams
 	 */
 	private $globalParams;
 
@@ -54,7 +54,7 @@ class Request
 	 * GET method
 	 *
 	 * @param string $method
-	 * @param array|null $params
+	 * @param array<string, mixed>|null $params
 	 *
 	 * @return stdClass
 	 * @throws Exception
@@ -71,7 +71,7 @@ class Request
 	 * Post method
 	 *
 	 * @param string $method
-	 * @param array|null $params
+	 * @param array<string, mixed>|null $params
 	 *
 	 * @return stdClass
 	 * @throws Exception
@@ -92,7 +92,7 @@ class Request
 	 *
 	 * @param string $method
 	 * @param string $content
-	 * @param array|null $params
+	 * @param array<string, mixed>|null $params
 	 *
 	 * @return stdClass
 	 * @throws Exception
@@ -140,7 +140,7 @@ class Request
 	 *
 	 * @param string $method
 	 *
-	 * @param array $params
+	 * @param array<string, mixed> $params
 	 * @return string
 	 */
 	private function _prepareURL(string $method, array $params = array()): string

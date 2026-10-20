@@ -25,7 +25,7 @@ class Curl
 	/**
 	 * Array of header data
 	 *
-	 * @var array $headers
+	 * @var array<int, string> $headers
 	 */
 	private $headers = array();
 

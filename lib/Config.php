@@ -11,12 +11,21 @@ namespace pCloud\Sdk;
  */
 class Config {
 	
+	/**
+	 * @var string
+	 */
 	static public $usHost = "https://api.pcloud.com/";
+	/**
+	 * @var string
+	 */
 	static public $euHost = "https://eapi.pcloud.com/";
 	/**
 	 * @var class-string<Curl>
 	 */
 	static public $curllib = "pCloud\Sdk\Curl";
+	/**
+	 * @var int
+	 */
 	static public $filePartSize = 10485760;
 
 	/**

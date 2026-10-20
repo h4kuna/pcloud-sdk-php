@@ -46,7 +46,7 @@ class FolderTest extends TestCase
 	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testListRoot()
+	public function testListRoot(): void
 	{
 		$expected = $this->buildExpected("listfolder", array("folderid" => 0));
 		$query = $this->instance->listRoot();
@@ -58,7 +58,7 @@ class FolderTest extends TestCase
 	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testListFolder()
+	public function testListFolder(): void
 	{
 		$folderid = 1234;
 
@@ -72,7 +72,7 @@ class FolderTest extends TestCase
 	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testlistFolderByName()
+	public function testlistFolderByName(): void
 	{
 		$folderName = "folderName";
 
@@ -87,7 +87,7 @@ class FolderTest extends TestCase
 	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testCreateFolder()
+	public function testCreateFolder(): void
 	{
 		$folderid = 1234;
 		$name = "folderName";
@@ -102,7 +102,7 @@ class FolderTest extends TestCase
 	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testRenameFolder()
+	public function testRenameFolder(): void
 	{
 		$folderid = 1234;
 		$name = "newName";
@@ -117,7 +117,7 @@ class FolderTest extends TestCase
 	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testMoveFolder()
+	public function testMoveFolder(): void
 	{
 		$folderid = 1234;
 		$destination = 12;
@@ -132,7 +132,7 @@ class FolderTest extends TestCase
 	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testDeleteFolder()
+	public function testDeleteFolder(): void
 	{
 		$folderid = 1234;
 
@@ -146,7 +146,7 @@ class FolderTest extends TestCase
 	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
-	public function testDeleteRecursiveFolder()
+	public function testDeleteRecursiveFolder(): void
 	{
 		$folderid = 1234;
 
@@ -157,12 +157,12 @@ class FolderTest extends TestCase
 	}
 
 	/**
-	 * @param $method
-	 * @param $params
+	 * @param string $method
+	 * @param array<string, int|string> $params
 	 *
 	 * @return string
 	 */
-	private function buildExpected($method, $params): string
+	private function buildExpected(string $method, array $params): string
 	{
 		$expected = pCloud\Sdk\Config::getApiHostByLocationId($this->pCloudApp->getLocationId()) . $method;
 

@@ -74,7 +74,7 @@ class Folder
 	 *
 	 * @param int|string $folder
 	 *
-	 * @return array|null
+	 * @return array<mixed>|null
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -118,7 +118,7 @@ class Folder
 	/**
 	 * List root folders
 	 *
-	 * @return array
+	 * @return array<int, stdClass>
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -132,7 +132,7 @@ class Folder
 	 *
 	 * @param int $folderId
 	 *
-	 * @return array
+	 * @return array<int, stdClass>
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
