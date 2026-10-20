@@ -15,27 +15,15 @@ final class Response
 
 	/**
 	 * Response data, decoded to stdClass if it is a valid JSON object
-	 *
-	 * @var string|stdClass $response
 	 */
-	private $response;
+	private string|stdClass $response;
 
-	/**
-	 * @var int $httpCode
-	 */
-	private $httpCode;
+	private int $httpCode;
 
-	/**
-	 * @var string $contentType
-	 */
-	private $contentType;
+	private string $contentType;
 
 	/**
 	 * Class constructor
-	 *
-	 * @param string $response
-	 * @param int $httpCode
-	 * @param string $contentType
 	 */
 	function __construct(string $response, int $httpCode, string $contentType)
 	{
@@ -49,7 +37,6 @@ final class Response
 	/**
 	 * Get method
 	 *
-	 * @return stdClass
 	 * @throws Exception
 	 */
 	public function get(): stdClass
@@ -73,8 +60,6 @@ final class Response
 
 	/**
 	 * Converts the response if it is in JSON format
-	 *
-	 * @return void
 	 */
 	private function parseJson(): void
 	{
@@ -88,10 +73,6 @@ final class Response
 
 	/**
 	 * Parse the response data
-	 *
-	 * @param stdClass $response
-	 *
-	 * @return stdClass
 	 */
 	private function parseResponse(stdClass $response): stdClass
 	{

@@ -15,15 +15,11 @@ final class Folder
 
 	/**
 	 * Holds the Request class
-	 *
-	 * @var Request $request
 	 */
-	private $request;
+	private Request $request;
 
 	/**
 	 * Main class constructor
-	 *
-	 * @param App $app
 	 */
 	function __construct(App $app)
 	{
@@ -33,9 +29,6 @@ final class Folder
 	/**
 	 * Get folder meta data
 	 *
-	 * @param int $folderId
-	 *
-	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -47,9 +40,6 @@ final class Folder
 	/**
 	 * Search for folder
 	 *
-	 * @param string $path
-	 *
-	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -71,8 +61,6 @@ final class Folder
 	/**
 	 * list files in folder identified by name
 	 * (start from the root, match directory name, ...)
-	 *
-	 * @param string|null $folder
 	 *
 	 * @return array<mixed>|null
 	 * @throws Exception
@@ -132,8 +120,6 @@ final class Folder
 	/**
 	 * Get folder content
 	 *
-	 * @param int $folderId
-	 *
 	 * @return array<mixed>
 	 * @throws Exception
 	 * @noinspection PhpUnused
@@ -153,14 +139,11 @@ final class Folder
 	}
 
 	/**
-	 * @param string|null $name
-	 * @param int|null $parent
-	 *
 	 * @return stdClass|int  Folder ID or response Data
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function create(?string $name, ?int $parent = 0)
+	public function create(?string $name, ?int $parent = 0): stdClass|int
 	{
 		if ($name === null || $name === '') {
 			throw new InvalidArgumentException("Please, provide valid folder name");
@@ -179,14 +162,10 @@ final class Folder
 	/**
 	 * Rename folder
 	 *
-	 * @param int $folderId
-	 * @param string|null $name
-	 *
-	 * @return stdClass|int
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function rename(int $folderId, ?string $name)
+	public function rename(int $folderId, ?string $name): stdClass|int
 	{
 		if ($name === null || $name === '') {
 			throw new InvalidArgumentException("Please, provide folder name");
@@ -205,14 +184,10 @@ final class Folder
 	/**
 	 * Move folder
 	 *
-	 * @param int $folderId
-	 * @param int $newParent
-	 *
-	 * @return stdClass|int
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function move(int $folderId, int $newParent)
+	public function move(int $folderId, int $newParent): stdClass|int
 	{
 		$params = array(
 			"tofolderid" => $newParent,
@@ -227,13 +202,10 @@ final class Folder
 	/**
 	 * Delete folder
 	 *
-	 * @param int $folderId
-	 *
-	 * @return bool|stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function delete(int $folderId)
+	public function delete(int $folderId): bool|stdClass
 	{
 		$response = $this->request->get("deletefolder", array("folderid" => $folderId));
 
@@ -246,9 +218,6 @@ final class Folder
 	/**
 	 * Delete recursive
 	 *
-	 * @param int $folderId
-	 *
-	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -260,11 +229,9 @@ final class Folder
 	/**
 	 * Picks the folder ID from the response metadata
 	 *
-	 * @param stdClass $response
-	 *
 	 * @return stdClass|int Folder ID, or the whole response if it carries none
 	 */
-	private function folderIdOrResponse(stdClass $response)
+	private function folderIdOrResponse(stdClass $response): stdClass|int
 	{
 		$metadata = $response->metadata ?? null;
 		$folderId = $metadata instanceof stdClass ? ($metadata->folderid ?? null) : null;

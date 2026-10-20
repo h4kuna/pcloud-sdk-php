@@ -13,10 +13,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "ErrorCurl.php";
 final class ExceptionTest extends TestCase
 {
 
-	/**
-	 * @var pCloud\Sdk\App
-	 */
-	private $pCloudApp;
+	private pCloud\Sdk\App $pCloudApp;
 
 	/**
 	 * Set up the initial needed data before running the test
@@ -34,17 +31,12 @@ final class ExceptionTest extends TestCase
 		pCloud\Sdk\Config::$curllib = "ErrorCurl";
 	}
 
-	/**
-	 * @return void
-	 */
 	public function tearDown(): void
 	{
 		pCloud\Sdk\Config::$curllib = "pCloud\Sdk\Curl";
 	}
 
 	/**
-	 * @param string|null $name
-	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	#[DataProvider('provideCreateData')]
@@ -56,9 +48,6 @@ final class ExceptionTest extends TestCase
 	}
 
 	/**
-	 * @param int $folderId
-	 * @param string|null $name
-	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	#[DataProvider('provideRenameData')]

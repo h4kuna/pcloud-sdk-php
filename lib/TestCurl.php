@@ -15,7 +15,6 @@ final class TestCurl extends Curl
 {
 
 	/**
-	 * @param string $url
 	 * @noinspection PhpUnused
 	 */
 	function __construct(string $url)
@@ -24,7 +23,6 @@ final class TestCurl extends Curl
 	}
 
 	/**
-	 * @return stdClass
 	 * @noinspection PhpUnused
 	 */
 	public function exec(): stdClass
@@ -49,10 +47,6 @@ final class TestCurl extends Curl
 
 	/**
 	 * Parse URL
-	 *
-	 * @param string $url
-	 *
-	 * @return string
 	 */
 	private function parseUrl(string $url): string
 	{

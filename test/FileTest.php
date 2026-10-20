@@ -14,19 +14,10 @@ final class FileTest extends TestCase
 {
 	use AssertsRequestUrl;
 
-	/**
-	 * @var pCloud\Sdk\App
-	 */
-	private $pCloudApp;
+	private pCloud\Sdk\App $pCloudApp;
 
-	/**
-	 * @var pCloud\Sdk\File
-	 */
-	private $instance;
+	private pCloud\Sdk\File $instance;
 
-	/**
-	 * @return void
-	 */
 	public function setUp(): void
 	{
 		$access_token = getenv('ACCESS_TOKEN');
@@ -41,16 +32,12 @@ final class FileTest extends TestCase
 		$this->instance = new pCloud\Sdk\File($this->pCloudApp);
 	}
 
-	/**
-	 * @return void
-	 */
 	public function tearDown(): void
 	{
 		unset($this->instance);
 	}
 
 	/**
-	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function testGetFileInfo(): void
@@ -159,10 +146,7 @@ final class FileTest extends TestCase
 	}
 
 	/**
-	 * @param string $method
 	 * @param array<string, int|string> $params
-	 *
-	 * @return string
 	 */
 	private function buildExpected(string $method, array $params): string
 	{

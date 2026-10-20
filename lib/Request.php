@@ -14,10 +14,8 @@ final class Request
 
 	/**
 	 * pCloud api endpoint host
-	 *
-	 * @var string $host
 	 */
-	private $host;
+	private string $host;
 
 	/**
 	 * Global parameters, initially access token is in this variable,
@@ -25,20 +23,16 @@ final class Request
 	 *
 	 * @var array<string, mixed> $globalParams
 	 */
-	private $globalParams;
+	private array $globalParams;
 
 	/**
 	 * cURL function execution timeout ( in seconds )
-	 *
-	 * @var int $curlExecutionTimeout
 	 */
-	private $curlExecutionTimeout;
+	private int $curlExecutionTimeout;
 
 	/**
 	 * Class constructor
 	 * collects the host and the initial global parameters
-	 *
-	 * @param App $app
 	 */
 	function __construct(App $app)
 	{
@@ -53,10 +47,8 @@ final class Request
 	/**
 	 * GET method
 	 *
-	 * @param string $method
 	 * @param array<string, mixed> $params
 	 *
-	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -70,10 +62,8 @@ final class Request
 	/**
 	 * Post method
 	 *
-	 * @param string $method
 	 * @param array<string, mixed>|null $params
 	 *
-	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -90,11 +80,8 @@ final class Request
 	/**
 	 * Put method, will mostly be used for file upload
 	 *
-	 * @param string $method
-	 * @param string $content
 	 * @param array<string, mixed> $params
 	 *
-	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -115,8 +102,6 @@ final class Request
 	 * Setup new Curl instance
 	 *
 	 * @param string $endPoint the final cURL URL endpoint
-	 *
-	 * @return Curl
 	 */
 	private function _buildCurl(string $endPoint): Curl
 	{
@@ -138,10 +123,7 @@ final class Request
 	/**
 	 * This method combines the host with the API method and if there are some additional parameters.
 	 *
-	 * @param string $method
-	 *
 	 * @param array<string, mixed> $params
-	 * @return string
 	 */
 	private function _prepareURL(string $method, array $params = array()): string
 	{

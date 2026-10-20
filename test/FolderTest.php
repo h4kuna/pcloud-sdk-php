@@ -13,19 +13,10 @@ final class FolderTest extends TestCase
 {
 	use AssertsRequestUrl;
 
-	/**
-	 * @var pCloud\Sdk\App
-	 */
-	private $pCloudApp;
+	private pCloud\Sdk\App $pCloudApp;
 
-	/**
-	 * @var pCloud\Sdk\Folder
-	 */
-	private $instance;
+	private pCloud\Sdk\Folder $instance;
 
-	/**
-	 * @return void
-	 */
 	public function setUp(): void
 	{
 		$access_token = getenv('ACCESS_TOKEN');
@@ -40,16 +31,12 @@ final class FolderTest extends TestCase
 		$this->instance = new pCloud\Sdk\Folder($this->pCloudApp);
 	}
 
-	/**
-	 * @return void
-	 */
 	public function tearDown(): void
 	{
 		unset($this->instance);
 	}
 
 	/**
-	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function testListRoot(): void
@@ -62,7 +49,6 @@ final class FolderTest extends TestCase
 	}
 
 	/**
-	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function testListFolder(): void
@@ -77,7 +63,6 @@ final class FolderTest extends TestCase
 	}
 
 	/**
-	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function testlistFolderByName(): void
@@ -92,7 +77,6 @@ final class FolderTest extends TestCase
 	}
 
 	/**
-	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function testCreateFolder(): void
@@ -107,7 +91,6 @@ final class FolderTest extends TestCase
 	}
 
 	/**
-	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function testRenameFolder(): void
@@ -122,7 +105,6 @@ final class FolderTest extends TestCase
 	}
 
 	/**
-	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function testMoveFolder(): void
@@ -137,7 +119,6 @@ final class FolderTest extends TestCase
 	}
 
 	/**
-	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function testDeleteFolder(): void
@@ -151,7 +132,6 @@ final class FolderTest extends TestCase
 	}
 
 	/**
-	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function testDeleteRecursiveFolder(): void
@@ -165,10 +145,7 @@ final class FolderTest extends TestCase
 	}
 
 	/**
-	 * @param string $method
 	 * @param array<string, int|string> $params
-	 *
-	 * @return string
 	 */
 	private function buildExpected(string $method, array $params): string
 	{

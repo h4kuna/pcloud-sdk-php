@@ -17,22 +17,18 @@ class Curl
 {
 	/**
 	 * Holds the cURL
-	 *
-	 * @var CurlHandle $curl
 	 */
-	protected $curl;
+	protected CurlHandle $curl;
 
 	/**
 	 * Array of header data
 	 *
 	 * @var array<int, string> $headers
 	 */
-	private $headers = array();
+	private array $headers = array();
 
 	/**
 	 * Class constructor
-	 *
-	 * @param string $url
 	 *
 	 * @throws Exception
 	 */
@@ -53,13 +49,9 @@ class Curl
 	/**
 	 * Set cURL option
 	 *
-	 * @param int $option
-	 * @param mixed $value
-	 *
-	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function setOption(int $option, $value): void
+	public function setOption(int $option, mixed $value): void
 	{
 		curl_setopt($this->curl, $option, $value);
 	}
@@ -67,9 +59,6 @@ class Curl
 	/**
 	 * Add aditional header to be sent with the cURL request
 	 *
-	 * @param string $header
-	 *
-	 * @return void
 	 * @noinspection PhpUnused
 	 */
 	public function addHeader(string $header): void
@@ -79,8 +68,6 @@ class Curl
 
 	/**
 	 * The main method, executes cURL exec and throws exception if anything fails
-	 *
-	 * @return stdClass
 	 *
 	 * @throws Exception
 	 * @noinspection PhpUnused
@@ -104,10 +91,8 @@ class Curl
 
 	/**
 	 * Simple "retry" function based on the response status code
-	 *
-	 * @return bool|string
 	 */
-	private function curlReconnect()
+	private function curlReconnect(): bool|string
 	{
 		try {
 			foreach (range(0, 3) as $ignored) {

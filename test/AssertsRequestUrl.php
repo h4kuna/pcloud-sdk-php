@@ -8,13 +8,7 @@ declare(strict_types=1);
 trait AssertsRequestUrl
 {
 
-	/**
-	 * @param string $expected
-	 * @param mixed $response
-	 *
-	 * @return void
-	 */
-	private static function assertRequestUrl(string $expected, $response): void
+	private static function assertRequestUrl(string $expected, mixed $response): void
 	{
 		self::assertInstanceOf(stdClass::class, $response);
 		self::assertSame($expected, $response->url);

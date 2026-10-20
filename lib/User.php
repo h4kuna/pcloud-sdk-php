@@ -14,20 +14,14 @@ final class User
 
 	/**
 	 * Holds the Request class
-	 *
-	 * @var Request $request
 	 */
-	private $request;
+	private Request $request;
 
-	/**
-	 * @var stdClass $userInfo
-	 */
-	private $userInfo;
+	private stdClass $userInfo;
 
 	/**
 	 * Class constructor
 	 *
-	 * @param App $app
 	 * @throws Exception
 	 */
 	function __construct(App $app)
@@ -39,7 +33,6 @@ final class User
 	/**
 	 * Get the full user info
 	 *
-	 * @return stdClass
 	 * @noinspection PhpUnused
 	 */
 	public function getUserInfo(): stdClass
@@ -50,7 +43,6 @@ final class User
 	/**
 	 * Get ther User ID
 	 *
-	 * @return int
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -62,7 +54,6 @@ final class User
 	/**
 	 * Get the user Email Address
 	 *
-	 * @return string
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -74,7 +65,6 @@ final class User
 	/**
 	 * Get the used quota
 	 *
-	 * @return int
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -86,7 +76,6 @@ final class User
 	/**
 	 * Get quota
 	 *
-	 * @return int
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -98,7 +87,6 @@ final class User
 	/**
 	 * Get user's public links quota
 	 *
-	 * @return int
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -108,13 +96,9 @@ final class User
 	}
 
 	/**
-	 * @param mixed $value
-	 * @param string $field
-	 *
-	 * @return int
 	 * @throws Exception
 	 */
-	private function intValue($value, string $field): int
+	private function intValue(mixed $value, string $field): int
 	{
 		if (!is_int($value)) {
 			throw new Exception(sprintf("Unexpected value of %s in user info", $field));
@@ -124,13 +108,9 @@ final class User
 	}
 
 	/**
-	 * @param mixed $value
-	 * @param string $field
-	 *
-	 * @return string
 	 * @throws Exception
 	 */
-	private function stringValue($value, string $field): string
+	private function stringValue(mixed $value, string $field): string
 	{
 		if (!is_string($value)) {
 			throw new Exception(sprintf("Unexpected value of %s in user info", $field));

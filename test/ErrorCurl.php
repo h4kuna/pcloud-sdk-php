@@ -12,7 +12,6 @@ final class ErrorCurl extends Curl
 {
 
 	/**
-	 * @return stdClass
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function exec(): stdClass

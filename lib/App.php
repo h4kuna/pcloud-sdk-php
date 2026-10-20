@@ -13,55 +13,40 @@ final class App
 {
 	/**
 	 * App key. In https://docs.pcloud.com/my_apps/ you will find it also as "Client ID"
-	 *
-	 * @var string $appKey
 	 */
-	private $appKey = '';
+	private string $appKey = '';
 
 	/**
 	 * App secret. In https://docs.pcloud.com/my_apps/ you will find it also as "Client secret"
-	 *
-	 * @var string $appSecret
 	 */
-	private $appSecret = '';
+	private string $appSecret = '';
 
 	/**
 	 * Redirect URL. It's usually set in https://docs.pcloud.com/my_apps/
-	 *
-	 * @var string $redirect_uri
 	 */
-	private $redirect_uri = '';
+	private string $redirect_uri = '';
 
 	/**
 	 * The access token, you will receive one if you call getTokenFromCode()
-	 *
-	 * @var string $access_token
 	 */
-	private $access_token = '';
+	private string $access_token = '';
 
 	/**
 	 * Location ID, 1 - USA, 2 - EU
-	 *
-	 * @var int $locationid
 	 */
-	private $locationid = 1;
+	private int $locationid = 1;
 
 	/**
 	 * cURL function execution timeout ( in seconds )
-	 *
-	 * @var int $curl_exec_timeout
 	 */
-	private $curl_exec_timeout = 3600;
+	private int $curl_exec_timeout = 3600;
 
 	/**
 	 * Set App key
 	 *
-	 * @param string $appKey
-	 *
-	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function setAppKey(string $appKey)
+	public function setAppKey(string $appKey): void
 	{
 		$this->appKey = trim($appKey);
 	}
@@ -69,7 +54,6 @@ final class App
 	/**
 	 * Get App key
 	 *
-	 * @return string
 	 * @noinspection PhpUnused
 	 */
 	public function getAppKey(): string
@@ -80,9 +64,6 @@ final class App
 	/**
 	 * Sets app secret
 	 *
-	 * @param string $appSecret
-	 *
-	 * @return void
 	 * @noinspection PhpUnused
 	 */
 	public function setAppSecret(string $appSecret): void
@@ -93,7 +74,6 @@ final class App
 	/**
 	 * Get app secret
 	 *
-	 * @return string
 	 * @noinspection PhpUnused
 	 */
 	public function getAppSecret(): string
@@ -104,9 +84,6 @@ final class App
 	/**
 	 * Set Redirect URL
 	 *
-	 * @param string $redirect_uri
-	 *
-	 * @return void
 	 * @noinspection PhpUnused
 	 */
 	public function setRedirectURI(string $redirect_uri): void
@@ -117,7 +94,6 @@ final class App
 	/**
 	 * Get Redirect URL
 	 *
-	 * @return string
 	 * @noinspection PhpUnused
 	 */
 	public function getRedirectURI(): string
@@ -128,9 +104,6 @@ final class App
 	/**
 	 * Sets the Access Token
 	 *
-	 * @param string $access_token
-	 *
-	 * @return void
 	 * @noinspection PhpUnused
 	 */
 	public function setAccessToken(string $access_token): void
@@ -141,7 +114,6 @@ final class App
 	/**
 	 * Returns the Access Token
 	 *
-	 * @return string
 	 * @noinspection PhpUnused
 	 */
 	public function getAccessToken(): string
@@ -152,12 +124,9 @@ final class App
 	/**
 	 * Set location ID
 	 *
-	 * @param string|int $locationid
-	 *
-	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function setLocationId($locationid): void
+	public function setLocationId(string|int $locationid): void
 	{
 		$this->locationid = intval($locationid);
 	}
@@ -165,7 +134,6 @@ final class App
 	/**
 	 * Get location ID
 	 *
-	 * @return int
 	 * @noinspection PhpUnused
 	 */
 	public function getLocationId(): int
@@ -177,7 +145,6 @@ final class App
 	 * Will build and return oAuth2 authorization URL
 	 * from which you will receive auth code.
 	 *
-	 * @return string
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -198,14 +165,11 @@ final class App
 	}
 
 	/**
-	 * @param string $code
-	 * @param string|int $locationid
-	 *
 	 * @return array{access_token: string, locationid: int}
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function getTokenFromCode(string $code, $locationid): array
+	public function getTokenFromCode(string $code, string|int $locationid): array
 	{
 		$this->validParams(["appKey" => $this->appKey, "appSecret" => $this->appSecret]);
 
@@ -253,18 +217,16 @@ final class App
 	/**
 	 * Sets cURL function execution timeout
 	 *
-	 * @param int $timeout
-	 * @return void
 	 * @noinspection PhpUnused
 	 */
-	public function setCurlExecutionTimeout(int $timeout) {
+	public function setCurlExecutionTimeout(int $timeout): void
+	{
 		$this->curl_exec_timeout = abs($timeout);
 	}
 
 	/**
 	 * Sets cURL function execution timeout
 	 *
-	 * @return int
 	 * @noinspection PhpUnused
 	 */
 	public function getCurlExecutionTimeout(): int
@@ -277,7 +239,6 @@ final class App
 	 *
 	 * @param array<string, string> $params parameter name => value
 	 *
-	 * @return void
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */

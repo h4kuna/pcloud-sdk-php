@@ -13,18 +13,11 @@ final class UserTest extends TestCase
 {
 	use AssertsRequestUrl;
 
-	/**
-	 * @var pCloud\Sdk\App
-	 */
-	private $pCloudApp;
+	private pCloud\Sdk\App $pCloudApp;
+
+	private pCloud\Sdk\User $instance;
 
 	/**
-	 * @var pCloud\Sdk\User
-	 */
-	private $instance;
-
-	/**
-	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function setUp(): void
@@ -41,17 +34,11 @@ final class UserTest extends TestCase
 		$this->instance = new pCloud\Sdk\User($this->pCloudApp);
 	}
 
-	/**
-	 * @return void
-	 */
 	public function tearDown(): void
 	{
 		unset($this->instance);
 	}
 
-	/**
-	 * @return void
-	 */
 	public function testUserInfo(): void
 	{
 

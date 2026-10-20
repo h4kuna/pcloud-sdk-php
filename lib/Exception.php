@@ -15,9 +15,6 @@ final class Exception extends \Exception
 
 	/**
 	 * Class constructor
-	 *
-	 * @param string $message
-	 * @param Throwable|null $cause
 	 */
 	function __construct(string $message, ?Throwable $cause = null)
 	{

@@ -19,19 +19,15 @@ final class File
 	 *
 	 * @var int<1, max> $partSize
 	 */
-	private $partSize;
+	private int $partSize;
 
 	/**
 	 * Holds the Request class
-	 *
-	 * @var Request $request
 	 */
-	private $request;
+	private Request $request;
 
 	/**
 	 * File Class constructor
-	 *
-	 * @param App $app
 	 */
 	function __construct(App $app)
 	{
@@ -42,9 +38,6 @@ final class File
 	/**
 	 * Get link ( using File ID )
 	 *
-	 * @param int $fileId
-	 *
-	 * @return string
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -72,7 +65,6 @@ final class File
 	 * @param int $fileId File ID
 	 * @param string $destination The destination, where the file will be stored!
 	 *
-	 * @return bool
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -113,11 +105,6 @@ final class File
 	}
 
 	/**
-	 * @param string $path
-	 * @param int $folderId
-	 * @param string|null $filename
-	 *
-	 * @return stdClass
 	 * @throws Exception
 	 */
 	public function upload(string $path, int $folderId = 0, ?string $filename = null): stdClass
@@ -186,13 +173,10 @@ final class File
 	/**
 	 * Delete file ( using file ID )
 	 *
-	 * @param int $fileId
-	 *
-	 * @return bool|stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function delete(int $fileId)
+	public function delete(int $fileId): bool|stdClass
 	{
 		$response = $this->request->get("deletefile", array("fileid" => $fileId));
 
@@ -205,10 +189,6 @@ final class File
 	/**
 	 * Rename file ( using file ID )
 	 *
-	 * @param int $fileId
-	 * @param string $name
-	 *
-	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -229,10 +209,6 @@ final class File
 	/**
 	 * Moves file
 	 *
-	 * @param int $fileId
-	 * @param int $folderId
-	 *
-	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -249,10 +225,6 @@ final class File
 	/**
 	 * Copy file
 	 *
-	 * @param int $fileId
-	 * @param int $folderId
-	 *
-	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -269,9 +241,6 @@ final class File
 	/**
 	 * Get file info ( using file ID )
 	 *
-	 * @param int $fileId
-	 *
-	 * @return stdClass
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
@@ -283,7 +252,6 @@ final class File
 	/**
 	 * Prepare to initiate Upload process
 	 *
-	 * @return stdClass
 	 * @throws Exception
 	 */
 	private function _createUpload(): stdClass
@@ -292,11 +260,6 @@ final class File
 	}
 
 	/**
-	 * @param int $uploadId
-	 * @param string $name
-	 * @param int $folderId
-	 *
-	 * @return stdClass
 	 * @throws Exception
 	 */
 	private function _save(int $uploadId, string $name, int $folderId): stdClass
@@ -313,10 +276,8 @@ final class File
 	/**
 	 * Upload - write content chunk
 	 *
-	 * @param string $content
 	 * @param array<string, mixed> $params
 	 *
-	 * @return void
 	 * @throws Exception
 	 */
 	private function _write(string $content, array $params): void

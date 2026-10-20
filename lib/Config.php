@@ -11,27 +11,17 @@ namespace pCloud\Sdk;
  */
 final class Config {
 	
-	/**
-	 * @var string
-	 */
-	static public $usHost = "https://api.pcloud.com/";
-	/**
-	 * @var string
-	 */
-	static public $euHost = "https://eapi.pcloud.com/";
+	public static string $usHost = "https://api.pcloud.com/";
+	public static string $euHost = "https://eapi.pcloud.com/";
 	/**
 	 * @var class-string<Curl>
 	 */
-	static public $curllib = "pCloud\Sdk\Curl";
+	public static string $curllib = "pCloud\Sdk\Curl";
 	/**
 	 * @var int<1, max>
 	 */
-	static public $filePartSize = 10485760;
+	public static int $filePartSize = 10485760;
 
-	/**
-	 * @param int $locationid
-	 * @return string
-	 */
 	static public function getApiHostByLocationId(int $locationid): string
 	{
 		if ($locationid === 2) {
