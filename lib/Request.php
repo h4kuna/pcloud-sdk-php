@@ -8,8 +8,6 @@ use stdClass;
 
 /**
  * Class Request
- *
- * @package pCloud\Sdk
  */
 class Request
 {

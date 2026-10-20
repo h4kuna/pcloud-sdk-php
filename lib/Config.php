@@ -8,8 +8,6 @@ namespace pCloud\Sdk;
  * Configuration class
  * Here you will find some basic API related configuration parameters.
  * They are provided and setup by pCloud, and shouldn't be modified.
- *
- * @package pCloud\Sdk
  */
 class Config {
 	

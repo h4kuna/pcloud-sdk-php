@@ -10,7 +10,6 @@ use stdClass;
  * Class File
  *
  * this class provides API calls related to file manipulation
- * @package pCloud\Sdk
  */
 class File
 {

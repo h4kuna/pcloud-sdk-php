@@ -9,8 +9,6 @@ use Throwable;
 /**
  * Local Exception handler
  * Overwrites the error code to 5000+
- *
- * @package pCloud\Sdk
  */
 class Exception extends \Exception
 {

@@ -12,8 +12,6 @@ use stdClass;
 /**
  * cURL class
  * this class manages the main cURL functionality
- *
- * @package pCloud\Sdk
  */
 class Curl
 {

@@ -8,8 +8,6 @@ use stdClass;
 
 /**
  * Main App class
- *
- * @package pCloud\Sdk
  */
 class App
 {

@@ -9,8 +9,6 @@ use stdClass;
 
 /**
  * Folder Class
- *
- * @package pCloud\Sdk
  */
 class Folder
 {
