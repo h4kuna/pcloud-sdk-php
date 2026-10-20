@@ -14,14 +14,14 @@ class Response
 {
 
 	/**
-	 * Response data
+	 * Response data, decoded to stdClass if it is a valid JSON object
 	 *
-	 * @var mixed $response
+	 * @var string|stdClass $response
 	 */
 	private $response;
 
 	/**
-	 * @var mixed $httpCode
+	 * @var int $httpCode
 	 */
 	private $httpCode;
 
@@ -58,11 +58,17 @@ class Response
 			throw new Exception("HTTP Code = " . $this->httpCode);
 		}
 
-		if ($this->response->result === 0) {
-			return $this->parseResponse();
-		} else {
-			throw new Exception($this->response->error);
+		if (!$this->response instanceof stdClass) {
+			throw new Exception("Unexpected response format");
 		}
+
+		if (($this->response->result ?? null) === 0) {
+			return $this->parseResponse($this->response);
+		}
+
+		$error = $this->response->error ?? null;
+
+		throw new Exception(is_string($error) ? $error : "Unexpected response format");
 	}
 
 	/**
@@ -72,20 +78,25 @@ class Response
 	 */
 	private function parseJson(): void
 	{
-		if (strpos($this->contentType, "application/json") !== false) {
-			$this->response = json_decode($this->response);
+		if (is_string($this->response) && strpos($this->contentType, "application/json") !== false) {
+			$decoded = json_decode($this->response);
+			if ($decoded instanceof stdClass) {
+				$this->response = $decoded;
+			}
 		}
 	}
 
 	/**
 	 * Parse the response data
 	 *
+	 * @param stdClass $response
+	 *
 	 * @return stdClass
 	 */
-	private function parseResponse(): stdClass
+	private function parseResponse(stdClass $response): stdClass
 	{
 		$return = new stdClass();
-		foreach ($this->response as $key => $value) {
+		foreach (get_object_vars($response) as $key => $value) {
 			if ($key === "result") continue;
 			$return->{$key} = $value;
 		}

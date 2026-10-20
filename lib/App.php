@@ -2,6 +2,8 @@
 
 namespace pCloud\Sdk;
 
+use stdClass;
+
 /**
  * Main App class
  *
@@ -230,13 +232,22 @@ class App
 			throw new Exception("Unexpected response from " . $host);
 		}
 
-		$response = json_decode($response);
+		$data = json_decode($response);
 
-		if ($response->result === 0) {
-			return array("access_token" => $response->access_token, "locationid" => $response->locationid);
-		} else {
-			throw new Exception($response->error);
+		if (!$data instanceof stdClass) {
+			throw new Exception("Unexpected response from " . $host);
 		}
+
+		$accessToken = $data->access_token ?? null;
+		$locationId = $data->locationid ?? null;
+
+		if (($data->result ?? null) === 0 && is_string($accessToken) && is_int($locationId)) {
+			return array("access_token" => $accessToken, "locationid" => $locationId);
+		}
+
+		$error = $data->error ?? null;
+
+		throw new Exception(is_string($error) ? $error : "Unexpected response from " . $host);
 	}
 
 	/**
