@@ -2,11 +2,15 @@
 
 use PHPUnit\Framework\TestCase;
 
+require_once __DIR__ . DIRECTORY_SEPARATOR . "AssertsRequestUrl.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR . "MemoryStream.php";
+
 /**
  * File test
  */
 class FileTest extends TestCase
 {
+	use AssertsRequestUrl;
 
 	/**
 	 * @var pCloud\Sdk\App
@@ -54,7 +58,7 @@ class FileTest extends TestCase
 		$expected = $this->buildExpected("checksumfile", array("fileid" => $fileid));
 		$query = $this->instance->getInfo($fileid);
 
-		self::assertEquals($expected, $query);
+		self::assertRequestUrl($expected, $query);
 	}
 
 	/**
@@ -64,10 +68,9 @@ class FileTest extends TestCase
 	{
 		$fileid = 1234;
 
-		$expected = $this->buildExpected("getfilelink", array("fileid" => $fileid));
 		$query = $this->instance->getLink($fileid);
 
-		self::assertEquals($expected, $query);
+		self::assertSame("https://test.pcloud.com/file.txt", $query);
 	}
 
 	/**
@@ -80,7 +83,7 @@ class FileTest extends TestCase
 		$expected = $this->buildExpected("deletefile", array("fileid" => $fileid));
 		$query = $this->instance->delete($fileid);
 
-		self::assertEquals($expected, $query);
+		self::assertRequestUrl($expected, $query);
 	}
 
 	/**
@@ -94,7 +97,7 @@ class FileTest extends TestCase
 		$expected = $this->buildExpected("renamefile", array("fileid" => $fileid, "toname" => $name));
 		$query = $this->instance->rename($fileid, $name);
 
-		self::assertEquals($expected, $query);
+		self::assertRequestUrl($expected, $query);
 	}
 
 	/**
@@ -108,7 +111,7 @@ class FileTest extends TestCase
 		$expected = $this->buildExpected("renamefile", array("fileid" => $fileid, "tofolderid" => $destination));
 		$query = $this->instance->move($fileid, $destination);
 
-		self::assertEquals($expected, $query);
+		self::assertRequestUrl($expected, $query);
 	}
 
 	/**
@@ -122,7 +125,7 @@ class FileTest extends TestCase
 		$expected = $this->buildExpected("copyfile", array("fileid" => $fileid, "tofolderid" => $destination));
 		$query = $this->instance->copy($fileid, $destination);
 
-		self::assertEquals($expected, $query);
+		self::assertRequestUrl($expected, $query);
 	}
 
 	/**
@@ -131,12 +134,26 @@ class FileTest extends TestCase
 	public function testDownloadFile(): void
 	{
 		$fileid = 1234;
-		$destination = sys_get_temp_dir();
-		if ($destination === '') $destination = "/tmp";
+		$destination = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid("pcloud-sdk-");
 
-		$result = $this->instance->download($fileid, $destination);
+		MemoryStream::$content = "file content";
 
-		self::assertEquals('boolean', gettype($result));
+		stream_wrapper_unregister("https");
+		stream_wrapper_register("https", MemoryStream::class);
+
+		try {
+			$result = $this->instance->download($fileid, $destination);
+		} finally {
+			stream_wrapper_restore("https");
+		}
+
+		$path = $destination . DIRECTORY_SEPARATOR . "file.txt";
+
+		self::assertTrue($result);
+		self::assertSame("file content", file_get_contents($path));
+
+		unlink($path);
+		rmdir($destination);
 	}
 
 	/**

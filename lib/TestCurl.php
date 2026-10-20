@@ -30,8 +30,17 @@ class TestCurl extends Curl
 		$url = curl_getinfo($this->curl, CURLINFO_EFFECTIVE_URL);
 		$url = $this->parseUrl($url);
 
+		$item = new stdClass();
+		$item->url = $url;
+
+		$metadata = new stdClass();
+		$metadata->contents = array($item);
+
 		$result = new stdClass();
 		$result->url = $url;
+		$result->hosts = array("test.pcloud.com");
+		$result->path = "/file.txt";
+		$result->metadata = $metadata;
 
 		return $result;
 	}

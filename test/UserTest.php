@@ -2,11 +2,14 @@
 
 use PHPUnit\Framework\TestCase;
 
+require_once __DIR__ . DIRECTORY_SEPARATOR . "AssertsRequestUrl.php";
+
 /**
  * User tests
  */
 class UserTest extends TestCase
 {
+	use AssertsRequestUrl;
 
 	/**
 	 * @var pCloud\Sdk\App
@@ -53,6 +56,6 @@ class UserTest extends TestCase
 		$expected = pCloud\Sdk\Config::getApiHostByLocationId($this->pCloudApp->getLocationId()) . "userinfo";
 		$query = $this->instance->getUserInfo();
 
-		self::assertEquals($expected, $query);
+		self::assertRequestUrl($expected, $query);
 	}
 }

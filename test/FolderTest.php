@@ -2,11 +2,14 @@
 
 use PHPUnit\Framework\TestCase;
 
+require_once __DIR__ . DIRECTORY_SEPARATOR . "AssertsRequestUrl.php";
+
 /**
  * Folders tests
  */
 class FolderTest extends TestCase
 {
+	use AssertsRequestUrl;
 
 	/**
 	 * @var pCloud\Sdk\App
@@ -50,9 +53,10 @@ class FolderTest extends TestCase
 	public function testListRoot(): void
 	{
 		$expected = $this->buildExpected("listfolder", array("folderid" => 0));
-		$query = $this->instance->listRoot();
+		$contents = $this->instance->listRoot();
 
-		self::assertEquals($expected, $query);
+		self::assertCount(1, $contents);
+		self::assertRequestUrl($expected, $contents[0]);
 	}
 
 	/**
@@ -64,9 +68,10 @@ class FolderTest extends TestCase
 		$folderid = 1234;
 
 		$expected = $this->buildExpected("listfolder", array("folderid" => $folderid));
-		$query = $this->instance->getContent($folderid);
+		$contents = $this->instance->getContent($folderid);
 
-		self::assertEquals($expected, $query);
+		self::assertCount(1, $contents);
+		self::assertRequestUrl($expected, $contents[0]);
 	}
 
 	/**
@@ -77,11 +82,11 @@ class FolderTest extends TestCase
 	{
 		$folderName = "folderName";
 
-		$expected = [$this->buildExpected("listfolder", array("folderid" => "0"))];
+		$expected = array("url" => $this->buildExpected("listfolder", array("folderid" => 0)));
 
 		$query = $this->instance->listFolder($folderName);
 
-		self::assertEquals($expected, $query);
+		self::assertSame($expected, $query);
 	}
 
 	/**
@@ -96,7 +101,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("createfolder", array("name" => $name, "folderid" => $folderid));
 		$query = $this->instance->create($name, $folderid);
 
-		self::assertEquals($expected, $query);
+		self::assertRequestUrl($expected, $query);
 	}
 
 	/**
@@ -111,7 +116,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("renamefolder", array("toname" => $name, "folderid" => $folderid));
 		$query = $this->instance->rename($folderid, $name);
 
-		self::assertEquals($expected, $query);
+		self::assertRequestUrl($expected, $query);
 	}
 
 	/**
@@ -126,7 +131,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("renamefolder", array("tofolderid" => $destination, "folderid" => $folderid));
 		$query = $this->instance->move($folderid, $destination);
 
-		self::assertEquals($expected, $query);
+		self::assertRequestUrl($expected, $query);
 	}
 
 	/**
@@ -140,7 +145,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("deletefolder", array("folderid" => $folderid));
 		$query = $this->instance->delete($folderid);
 
-		self::assertEquals($expected, $query);
+		self::assertRequestUrl($expected, $query);
 	}
 
 	/**
@@ -154,7 +159,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("deletefolderrecursive", array("folderid" => $folderid));
 		$query = $this->instance->deleteRecursive($folderid);
 
-		self::assertEquals($expected, $query);
+		self::assertRequestUrl($expected, $query);
 	}
 
 	/**

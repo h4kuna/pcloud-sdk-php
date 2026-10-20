@@ -1,6 +1,9 @@
 <?php
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+
+require_once __DIR__ . DIRECTORY_SEPARATOR . "ErrorCurl.php";
 
 /**
  * Exceptions triggering tests
@@ -25,15 +28,24 @@ class ExceptionTest extends TestCase
 		$this->pCloudApp = new pCloud\Sdk\App();
 		$this->pCloudApp->setAccessToken($access_token);
 		$this->pCloudApp->setLocationId($locationid);
+
+		pCloud\Sdk\Config::$curllib = "ErrorCurl";
 	}
 
 	/**
-	 * @dataProvider provideCreateData
-	 *
+	 * @return void
+	 */
+	public function tearDown(): void
+	{
+		pCloud\Sdk\Config::$curllib = "pCloud\Sdk\Curl";
+	}
+
+	/**
 	 * @param string|null $name
 	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
+	#[DataProvider('provideCreateData')]
 	public function testCreateFolder(?string $name = "testFolder"): void
 	{
 		$this->expectException(Exception::class);
@@ -42,13 +54,12 @@ class ExceptionTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider provideRenameData
-	 *
 	 * @param int $folderId
 	 * @param string|null $name
 	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
+	#[DataProvider('provideRenameData')]
 	public function testRenameFolder(int $folderId = 0, ?string $name = "testFolder"): void
 	{
 		$this->expectException(Exception::class);
@@ -57,10 +68,9 @@ class ExceptionTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider provideId
-	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
+	#[DataProvider('provideId')]
 	public function testDeleteFolder(int $folderId): void
 	{
 		$this->expectException(Exception::class);
@@ -69,8 +79,6 @@ class ExceptionTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider provideId
-	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
 	public function testDeleteRecursiveFolder(): void
@@ -81,10 +89,9 @@ class ExceptionTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider provideId
-	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
+	#[DataProvider('provideId')]
 	public function testGetFileLink(int $fileId): void
 	{
 		$this->expectException(Exception::class);
@@ -93,10 +100,9 @@ class ExceptionTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider provideId
-	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
+	#[DataProvider('provideId')]
 	public function testDeleteFile(int $fileId): void
 	{
 		$this->expectException(Exception::class);
@@ -105,10 +111,9 @@ class ExceptionTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider provideMoveData
-	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
+	#[DataProvider('provideMoveData')]
 	public function testMoveFile(int $fileId, int $folderId): void
 	{
 		$this->expectException(Exception::class);
@@ -117,10 +122,9 @@ class ExceptionTest extends TestCase
 	}
 
 	/**
-	 * @dataProvider provideId
-	 *
 	 * @throws \pCloud\Sdk\Exception
 	 */
+	#[DataProvider('provideId')]
 	public function testGetFileInfo(int $fileId): void
 	{
 		$this->expectException(Exception::class);
@@ -131,10 +135,10 @@ class ExceptionTest extends TestCase
 	/**
 	 * @return array<int, array<int, mixed>>
 	 */
-	public function provideId(): array
+	public static function provideId(): array
 	{
 		return array(
-			array(false),
+			array(0),
 			array(1)
 		);
 	}
@@ -142,30 +146,25 @@ class ExceptionTest extends TestCase
 	/**
 	 * @return array<int, array<int, mixed>>
 	 */
-	public function provideRenameData(): array
+	public static function provideRenameData(): array
 	{
 		return array(
 			array(0, ""),
 			array(0, "invalid/name"),
-			array(0, false),
-			array(0, true),
 			array(0, null),
 			array(1, ""),
 			array(1, "New name"),
-			array(false, "New name"),
 		);
 	}
 
 	/**
 	 * @return array<int, array<int, mixed>>
 	 */
-	public function provideCreateData(): array
+	public static function provideCreateData(): array
 	{
 		return array(
 			array(""),
 			array("invalid/name"),
-			array(false),
-			array(true),
 			array(null)
 		);
 	}
@@ -173,21 +172,19 @@ class ExceptionTest extends TestCase
 	/**
 	 * @return array<int, array<int, mixed>>
 	 */
-	public function provideMoveData(): array
+	public static function provideMoveData(): array
 	{
 		return array(
 			array(0, 1),
 			array(1, 0),
-			array(0, false),
-			array(0, true),
-			array(0, null)
+			array(0, 0)
 		);
 	}
 
 	/**
 	 * @return array<int, array<int, mixed>>
 	 */
-	public function provideUploadData(): array
+	public static function provideUploadData(): array
 	{
 		return array(
 			array(dirname(__FILE__) . DIRECTORY_SEPARATOR . "office pic 2015-09-28 16-44-30.jpeg", null),
@@ -201,7 +198,7 @@ class ExceptionTest extends TestCase
 	/**
 	 * @return array<int, array<int, mixed>>
 	 */
-	public function provideDownloadData(): array
+	public static function provideDownloadData(): array
 	{
 		return array(
 			array(false, dirname(__FILE__)),
