@@ -22,7 +22,7 @@ class Config {
 	 */
 	static public function getApiHostByLocationId(int $locationid): string
 	{
-		if ($locationid == 2) {
+		if ($locationid === 2) {
 			return self::$euHost;
 		} else {
 			return self::$usHost;

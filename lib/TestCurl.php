@@ -48,13 +48,13 @@ class TestCurl extends Curl
 
 		$parts = explode("?", $url);
 
-		if (count($parts) == 1) {
+		if (count($parts) === 1) {
 			return strval($parts[0]);
 		} else {
 			parse_str($parts[1], $query);
 			unset($query["access_token"]);
 			$parts[1] = http_build_query($query);
-			return strlen($parts[1]) == 0 ? $parts[0] : implode("?", $parts);
+			return strlen($parts[1]) === 0 ? $parts[0] : implode("?", $parts);
 		}
 	}
 }

@@ -9,6 +9,16 @@ class UserTest extends TestCase
 {
 
 	/**
+	 * @var pCloud\Sdk\App
+	 */
+	private $pCloudApp;
+
+	/**
+	 * @var pCloud\Sdk\User
+	 */
+	private $instance;
+
+	/**
 	 * @return void
 	 * @throws \pCloud\Sdk\Exception
 	 */
@@ -42,6 +52,6 @@ class UserTest extends TestCase
 		$expected = pCloud\Sdk\Config::getApiHostByLocationId($this->pCloudApp->getLocationId()) . "userinfo";
 		$query = $this->instance->getUserInfo();
 
-		$this->assertEquals($expected, $query);
+		self::assertEquals($expected, $query);
 	}
 }

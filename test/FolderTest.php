@@ -9,6 +9,16 @@ class FolderTest extends TestCase
 {
 
 	/**
+	 * @var pCloud\Sdk\App
+	 */
+	private $pCloudApp;
+
+	/**
+	 * @var pCloud\Sdk\Folder
+	 */
+	private $instance;
+
+	/**
 	 * @return void
 	 */
 	public function setUp(): void
@@ -41,7 +51,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("listfolder", array("folderid" => 0));
 		$query = $this->instance->listRoot();
 
-		$this->assertEquals($expected, $query);
+		self::assertEquals($expected, $query);
 	}
 
 	/**
@@ -55,7 +65,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("listfolder", array("folderid" => $folderid));
 		$query = $this->instance->getContent($folderid);
 
-		$this->assertEquals($expected, $query);
+		self::assertEquals($expected, $query);
 	}
 
 	/**
@@ -70,7 +80,7 @@ class FolderTest extends TestCase
 
 		$query = $this->instance->listFolder($folderName);
 
-		$this->assertEquals($expected, $query);
+		self::assertEquals($expected, $query);
 	}
 
 	/**
@@ -85,7 +95,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("createfolder", array("name" => $name, "folderid" => $folderid));
 		$query = $this->instance->create($name, $folderid);
 
-		$this->assertEquals($expected, $query);
+		self::assertEquals($expected, $query);
 	}
 
 	/**
@@ -100,7 +110,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("renamefolder", array("toname" => $name, "folderid" => $folderid));
 		$query = $this->instance->rename($folderid, $name);
 
-		$this->assertEquals($expected, $query);
+		self::assertEquals($expected, $query);
 	}
 
 	/**
@@ -115,7 +125,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("renamefolder", array("tofolderid" => $destination, "folderid" => $folderid));
 		$query = $this->instance->move($folderid, $destination);
 
-		$this->assertEquals($expected, $query);
+		self::assertEquals($expected, $query);
 	}
 
 	/**
@@ -129,7 +139,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("deletefolder", array("folderid" => $folderid));
 		$query = $this->instance->delete($folderid);
 
-		$this->assertEquals($expected, $query);
+		self::assertEquals($expected, $query);
 	}
 
 	/**
@@ -143,7 +153,7 @@ class FolderTest extends TestCase
 		$expected = $this->buildExpected("deletefolderrecursive", array("folderid" => $folderid));
 		$query = $this->instance->deleteRecursive($folderid);
 
-		$this->assertEquals($expected, $query);
+		self::assertEquals($expected, $query);
 	}
 
 	/**
@@ -156,7 +166,7 @@ class FolderTest extends TestCase
 	{
 		$expected = pCloud\Sdk\Config::getApiHostByLocationId($this->pCloudApp->getLocationId()) . $method;
 
-		if (!empty($params)) {
+		if ($params !== array()) {
 			$expected .= "?" . http_build_query($params);
 		}
 

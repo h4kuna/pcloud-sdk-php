@@ -168,14 +168,14 @@ class Request
 	 *
 	 * @param string $method
 	 *
-	 * @param string|array|null $params
+	 * @param array $params
 	 * @return string
 	 */
-	private function _prepareURL(string $method, $params = null): string
+	private function _prepareURL(string $method, array $params = array()): string
 	{
 		$url = $this->host . $method;
 
-		if (!empty($params)) {
+		if ($params !== array()) {
 			$url .= "?" . http_build_query($params);
 		}
 

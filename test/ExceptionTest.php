@@ -9,6 +9,11 @@ class ExceptionTest extends TestCase
 {
 
 	/**
+	 * @var pCloud\Sdk\App
+	 */
+	private $pCloudApp;
+
+	/**
 	 * Set up the initial needed data before running the test
 	 */
 	public function setUp(): void

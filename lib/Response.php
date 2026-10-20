@@ -54,11 +54,11 @@ class Response
 	 */
 	public function get(): stdClass
 	{
-		if ($this->httpCode != 200) {
+		if ($this->httpCode !== 200) {
 			throw new Exception("HTTP Code = " . $this->httpCode);
 		}
 
-		if ($this->response->result == 0) {
+		if ($this->response->result === 0) {
 			return $this->parseResponse();
 		} else {
 			throw new Exception($this->response->error);
@@ -86,7 +86,7 @@ class Response
 	{
 		$return = new stdClass();
 		foreach ($this->response as $key => $value) {
-			if ($key == "result") continue;
+			if ($key === "result") continue;
 			$return->{$key} = $value;
 		}
 		return $return;

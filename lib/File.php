@@ -78,11 +78,11 @@ class File
 	{
 		$fileLink = $this->getLink($fileId);
 
-		if (!empty($destination)) {
+		if ($destination !== '') {
 			$destination = str_replace(array("\\", "/"), DIRECTORY_SEPARATOR, $destination) . DIRECTORY_SEPARATOR;
 		}
 
-		if (!empty($destination) && !is_dir($destination)) {
+		if ($destination !== '' && !is_dir($destination)) {
 			if (!mkdir($destination)) {
 				throw new Exception("Couldn't create destination folder");
 			}
@@ -111,7 +111,7 @@ class File
 	 * @return stdClass
 	 * @throws Exception
 	 */
-	public function upload(string $path, int $folderId = 0, string $filename = null): stdClass
+	public function upload(string $path, int $folderId = 0, ?string $filename = null): stdClass
 	{
 		if (!file_exists($path) || !is_file($path) || !is_readable($path)) {
 			throw new Exception("Invalid file");
@@ -193,7 +193,7 @@ class File
 	 */
 	public function rename(int $fileId, string $name): stdClass
 	{
-		if (empty($name)) {
+		if ($name === '') {
 			throw new Exception("Please, provide valid file name!");
 		}
 

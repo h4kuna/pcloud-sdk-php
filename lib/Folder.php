@@ -83,28 +83,28 @@ class Folder
 
 		// first compare with each folder in root
 		if (is_null($folder)) {
-			return (array)$this->getContent(0);
+			return $this->getContent(0);
 		}
 
 		$extension = strval(pathinfo($folder, PATHINFO_EXTENSION));
-		if (!empty($extension)) {
+		if ($extension !== '') {
 			$folder = strval(pathinfo($folder, PATHINFO_DIRNAME));
 		}
 
-		$path_parts = array_reverse((array)explode(DIRECTORY_SEPARATOR, $folder));
+		$path_parts = array_reverse(explode(DIRECTORY_SEPARATOR, $folder));
 
 		$directory = null;
 		$currentFolderId = 0;
 
 		while (($folderName = array_pop($path_parts))) { /* current directory */
 
-			$folderItems = (array)$this->getContent(intval($currentFolderId));
+			$folderItems = $this->getContent(intval($currentFolderId));
 
-			foreach ($folderItems as $directory) {
+			foreach ($folderItems as $item) {
 
-				$directory = (array)$directory;
+				$directory = (array)$item;
 				if (isset($directory['isfolder']) && boolval($directory['isfolder']) === true) {
-					if (!empty($directory['name']) && strncmp($folderName, $directory['name'], strlen($folderName)) === 0) {
+					if (isset($directory['name']) && $directory['name'] !== '' && strncmp($folderName, $directory['name'], strlen($folderName)) === 0) {
 						$currentFolderId = $directory['folderid'];
 						break;
 					}
@@ -153,7 +153,7 @@ class Folder
 	 */
 	public function create(?string $name, ?int $parent = 0)
 	{
-		if (empty($name)) {
+		if ($name === null || $name === '') {
 			throw new InvalidArgumentException("Please, provide valid folder name");
 		}
 
@@ -179,7 +179,7 @@ class Folder
 	 */
 	public function rename(int $folderId, ?string $name)
 	{
-		if (empty($name)) {
+		if ($name === null || $name === '') {
 			throw new InvalidArgumentException("Please, provide folder name");
 		}
 

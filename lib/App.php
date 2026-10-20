@@ -181,14 +181,14 @@ class App
 	 */
 	public function getAuthorizeCodeUrl(): string
 	{
-		self::validParams(["appKey"]);
+		$this->validParams(["appKey" => $this->appKey]);
 
 		$params = array(
 			"client_id" => $this->appKey,
 			"response_type" => "code"
 		);
 
-		if (isset($this->redirect_uri) && !empty($this->redirect_uri)) {
+		if ($this->redirect_uri !== '') {
 			$params["redirect_uri"] = $this->redirect_uri;
 		}
 
@@ -205,7 +205,7 @@ class App
 	 */
 	public function getTokenFromCode(string $code, $locationid): array
 	{
-		self::validParams(["appKey", "appSecret"]);
+		$this->validParams(["appKey" => $this->appKey, "appSecret" => $this->appSecret]);
 
 		$params = array(
 			"client_id" => $this->appKey,
@@ -228,7 +228,7 @@ class App
 			$response = json_decode($response);
 		}
 
-		if ($response->result == 0) {
+		if ($response->result === 0) {
 			return array("access_token" => $response->access_token, "locationid" => $response->locationid);
 		} else {
 			throw new Exception($response->error);
@@ -258,19 +258,19 @@ class App
 	}
 
 	/**
-	 * Verifies is specific key exist in the class
+	 * Verifies that none of the given parameters is empty
 	 *
-	 * @param array $keys
+	 * @param array $params parameter name => value
 	 *
 	 * @return void
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	private function validParams(array $keys): void
+	private function validParams(array $params): void
 	{
-		foreach ($keys as $key) {
-			if (!isset($this->{$key}) || empty($this->{$key})) {
-				throw new Exception(sprintf("%s not found", $key));
+		foreach ($params as $name => $value) {
+			if ($value === '') {
+				throw new Exception(sprintf("%s not found", $name));
 			}
 		}
 	}

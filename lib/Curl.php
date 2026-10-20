@@ -35,7 +35,7 @@ class Curl
 	 */
 	function __construct(string $url)
 	{
-		if (empty($url)) {
+		if ($url === '') {
 			throw new InvalidArgumentException("Invalid URL");
 		}
 
@@ -114,7 +114,7 @@ class Curl
 		try {
 			foreach (range(0, 3) as $ignored) {
 				$response = curl_exec($this->curl);
-				if (intval(curl_getinfo($this->curl, CURLINFO_RESPONSE_CODE)) == 200) {
+				if (intval(curl_getinfo($this->curl, CURLINFO_RESPONSE_CODE)) === 200) {
 					return $response;
 				}
 			}
