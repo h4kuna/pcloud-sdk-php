@@ -11,7 +11,7 @@ ini_set("default_socket_timeout", 300);
 
 // Include autoload.php and set the credential file path
 
-require_once("../lib/autoload.php");
+require_once(__DIR__ . "/../vendor/autoload.php");
 
 try {
 	$access_token = "ACCESS_TOKEN";

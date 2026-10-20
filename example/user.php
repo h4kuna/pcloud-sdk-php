@@ -1,6 +1,6 @@
 <?php
 
-require_once("../lib/autoload.php");
+require_once(__DIR__ . "/../vendor/autoload.php");
 
 try {
 	$access_token = "ACCESS_TOKEN";

@@ -4,7 +4,7 @@
 	<body>
 	<?php
 
-	require_once("../lib/autoload.php");
+	require_once(__DIR__ . "/../vendor/autoload.php");
 
 	try {
 		if (isset($_GET["code"]) && isset($_GET["locationid"])) {
