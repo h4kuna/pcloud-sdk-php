@@ -1,11 +1,22 @@
-<?php
+<?php declare(strict_types = 1);
 
-declare(strict_types=1);
+namespace pCloud\Sdk\Tests;
 
+use pCloud\Sdk\App;
+use pCloud\Sdk\Config;
+use pCloud\Sdk\Curl;
+use pCloud\Sdk\Exception;
+use pCloud\Sdk\File;
+use pCloud\Sdk\Folder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Throwable;
+use function dirname;
+use function getenv;
+use function intval;
+use const DIRECTORY_SEPARATOR;
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . "ErrorCurl.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'ErrorCurl.php';
 
 /**
  * Exceptions triggering tests
@@ -13,113 +24,119 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "ErrorCurl.php";
 final class ExceptionTest extends TestCase
 {
 
-	private pCloud\Sdk\App $pCloudApp;
+	private App $pCloudApp;
 
 	/**
 	 * Set up the initial needed data before running the test
 	 */
 	public function setUp(): void
 	{
-		$access_token = getenv('ACCESS_TOKEN');
-		self::assertIsString($access_token);
-		$locationid = intval(getenv('LOCATION'));
+		$accessToken = getenv('ACCESS_TOKEN');
+		self::assertIsString($accessToken);
+		$locationId = intval(getenv('LOCATION'));
 
-		$this->pCloudApp = new pCloud\Sdk\App();
-		$this->pCloudApp->setAccessToken($access_token);
-		$this->pCloudApp->setLocationId($locationid);
+		$this->pCloudApp = new App();
+		$this->pCloudApp->setAccessToken($accessToken);
+		$this->pCloudApp->setLocationId($locationId);
 
-		pCloud\Sdk\Config::$curlLib = "ErrorCurl";
+		Config::$curlLib = ErrorCurl::class;
 	}
 
 	public function tearDown(): void
 	{
-		pCloud\Sdk\Config::$curlLib = "pCloud\Sdk\Curl";
+		Config::$curlLib = Curl::class;
 	}
 
 	/**
-	 * @throws \pCloud\Sdk\Exception
+	 * @throws Exception
 	 */
 	#[DataProvider('provideCreateData')]
-	public function testCreateFolder(?string $name = "testFolder"): void
+	public function testCreateFolder(?string $name = 'testFolder'): void
 	{
-		$this->expectException(Exception::class);
-		$folder = new pCloud\Sdk\Folder($this->pCloudApp);
+		$this->expectException(Throwable::class);
+		$folder = new Folder($this->pCloudApp);
 		$folder->create($name);
 	}
 
 	/**
-	 * @throws \pCloud\Sdk\Exception
+	 * @throws Exception
 	 */
 	#[DataProvider('provideRenameData')]
-	public function testRenameFolder(int $folderId = 0, ?string $name = "testFolder"): void
+	public function testRenameFolder(
+		int $folderId = 0,
+		?string $name = 'testFolder',
+	): void
 	{
-		$this->expectException(Exception::class);
-		$folder = new pCloud\Sdk\Folder($this->pCloudApp);
+		$this->expectException(Throwable::class);
+		$folder = new Folder($this->pCloudApp);
 		$folder->rename($folderId, $name);
 	}
 
 	/**
-	 * @throws \pCloud\Sdk\Exception
+	 * @throws Exception
 	 */
 	#[DataProvider('provideId')]
 	public function testDeleteFolder(int $folderId): void
 	{
-		$this->expectException(Exception::class);
-		$folder = new pCloud\Sdk\Folder($this->pCloudApp);
+		$this->expectException(Throwable::class);
+		$folder = new Folder($this->pCloudApp);
 		$folder->delete($folderId);
 	}
 
 	/**
-	 * @throws \pCloud\Sdk\Exception
+	 * @throws Exception
 	 */
 	public function testDeleteRecursiveFolder(): void
 	{
-		$this->expectException(Exception::class);
-		$folder = new pCloud\Sdk\Folder($this->pCloudApp);
+		$this->expectException(Throwable::class);
+		$folder = new Folder($this->pCloudApp);
 		$folder->deleteRecursive(-1);
 	}
 
 	/**
-	 * @throws \pCloud\Sdk\Exception
+	 * @throws Exception
 	 */
 	#[DataProvider('provideId')]
 	public function testGetFileLink(int $fileId): void
 	{
-		$this->expectException(Exception::class);
-		$file = new pCloud\Sdk\File($this->pCloudApp);
+		$this->expectException(Throwable::class);
+		$file = new File($this->pCloudApp);
 		$file->getLink($fileId);
 	}
 
 	/**
-	 * @throws \pCloud\Sdk\Exception
+	 * @throws Exception
 	 */
 	#[DataProvider('provideId')]
 	public function testDeleteFile(int $fileId): void
 	{
-		$this->expectException(Exception::class);
-		$file = new pCloud\Sdk\File($this->pCloudApp);
+		$this->expectException(Throwable::class);
+		$file = new File($this->pCloudApp);
 		$file->delete($fileId);
 	}
 
 	/**
-	 * @throws \pCloud\Sdk\Exception
+	 * @throws Exception
 	 */
 	#[DataProvider('provideMoveData')]
-	public function testMoveFile(int $fileId, int $folderId): void
+	public function testMoveFile(
+		int $fileId,
+		int $folderId,
+	): void
 	{
-		$this->expectException(Exception::class);
-		$file = new pCloud\Sdk\File($this->pCloudApp);
+		$this->expectException(Throwable::class);
+		$file = new File($this->pCloudApp);
 		$file->move($fileId, $folderId);
 	}
 
 	/**
-	 * @throws \pCloud\Sdk\Exception
+	 * @throws Exception
 	 */
 	#[DataProvider('provideId')]
 	public function testGetFileInfo(int $fileId): void
 	{
-		$this->expectException(Exception::class);
-		$file = new pCloud\Sdk\File($this->pCloudApp);
+		$this->expectException(Throwable::class);
+		$file = new File($this->pCloudApp);
 		$file->getInfo($fileId);
 	}
 
@@ -128,10 +145,10 @@ final class ExceptionTest extends TestCase
 	 */
 	public static function provideId(): array
 	{
-		return array(
-			array(0),
-			array(1)
-		);
+		return [
+			[0],
+			[1],
+		];
 	}
 
 	/**
@@ -139,13 +156,13 @@ final class ExceptionTest extends TestCase
 	 */
 	public static function provideRenameData(): array
 	{
-		return array(
-			array(0, ""),
-			array(0, "invalid/name"),
-			array(0, null),
-			array(1, ""),
-			array(1, "New name"),
-		);
+		return [
+			[0, ''],
+			[0, 'invalid/name'],
+			[0, null],
+			[1, ''],
+			[1, 'New name'],
+		];
 	}
 
 	/**
@@ -153,11 +170,11 @@ final class ExceptionTest extends TestCase
 	 */
 	public static function provideCreateData(): array
 	{
-		return array(
-			array(""),
-			array("invalid/name"),
-			array(null)
-		);
+		return [
+			[''],
+			['invalid/name'],
+			[null],
+		];
 	}
 
 	/**
@@ -165,11 +182,11 @@ final class ExceptionTest extends TestCase
 	 */
 	public static function provideMoveData(): array
 	{
-		return array(
-			array(0, 1),
-			array(1, 0),
-			array(0, 0)
-		);
+		return [
+			[0, 1],
+			[1, 0],
+			[0, 0],
+		];
 	}
 
 	/**
@@ -177,13 +194,13 @@ final class ExceptionTest extends TestCase
 	 */
 	public static function provideUploadData(): array
 	{
-		return array(
-			array(dirname(__FILE__) . DIRECTORY_SEPARATOR . "office pic 2015-09-28 16-44-30.jpeg", null),
-			array("not existing file", 0),
-			array(dirname(__FILE__) . DIRECTORY_SEPARATOR . "office pic 2015-09-28 16-44-30.jpeg", 1),
-			array(dirname(__FILE__) . DIRECTORY_SEPARATOR, 0),
-			array(false, 0)
-		);
+		return [
+			[dirname(__FILE__) . DIRECTORY_SEPARATOR . 'office pic 2015-09-28 16-44-30.jpeg', null],
+			['not existing file', 0],
+			[dirname(__FILE__) . DIRECTORY_SEPARATOR . 'office pic 2015-09-28 16-44-30.jpeg', 1],
+			[dirname(__FILE__) . DIRECTORY_SEPARATOR, 0],
+			[false, 0],
+		];
 	}
 
 	/**
@@ -191,12 +208,13 @@ final class ExceptionTest extends TestCase
 	 */
 	public static function provideDownloadData(): array
 	{
-		return array(
-			array(false, dirname(__FILE__)),
-			array(null, dirname(__FILE__)),
-			array(1, ""),
-			array(1, null),
-			array(0, false)
-		);
+		return [
+			[false, dirname(__FILE__)],
+			[null, dirname(__FILE__)],
+			[1, ''],
+			[1, null],
+			[0, false],
+		];
 	}
+
 }

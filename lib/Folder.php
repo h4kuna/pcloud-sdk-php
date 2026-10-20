@@ -1,11 +1,26 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace pCloud\Sdk;
 
 use InvalidArgumentException;
 use stdClass;
+use function array_pop;
+use function array_reverse;
+use function boolval;
+use function explode;
+use function is_array;
+use function is_bool;
+use function is_int;
+use function is_null;
+use function is_string;
+use function pathinfo;
+use function strlen;
+use function strncmp;
+use function strval;
+use const DIRECTORY_SEPARATOR;
+use const PATHINFO_DIRNAME;
+use const PATHINFO_EXTENSION;
+use const PHP_EOL;
 
 /**
  * Folder Class
@@ -21,7 +36,7 @@ final class Folder
 	/**
 	 * Main class constructor
 	 */
-	function __construct(App $app)
+	public function __construct(App $app)
 	{
 		$this->request = new Request($app);
 	}
@@ -33,7 +48,7 @@ final class Folder
 	 */
 	public function getMetadata(int $folderId): stdClass
 	{
-		return $this->request->get("listfolder", array("folderid" => $folderId));
+		return $this->request->get('listfolder', ['folderid' => $folderId]);
 	}
 
 	/**
@@ -44,16 +59,16 @@ final class Folder
 	public function search(string $path): stdClass
 	{
 		$path = pathinfo($path, PATHINFO_DIRNAME);
-		//$path = str_replace(DIRECTORY_SEPARATOR,"\\",$path);
+		// $path = str_replace(DIRECTORY_SEPARATOR,"\\",$path);
 
-		echo "Searching for folder: " . $path . PHP_EOL;
+		echo 'Searching for folder: ' . $path . PHP_EOL;
 
-		$params = array(
-			"nofiles" => 1,
-			"path" => $path
-		);
+		$params = [
+			'nofiles' => 1,
+			'path' => $path,
+		];
 
-		return $this->request->get("listfolder", $params);
+		return $this->request->get('listfolder', $params);
 	}
 
 	/**
@@ -61,11 +76,11 @@ final class Folder
 	 * (start from the root, match directory name, ...)
 	 *
 	 * @return array<mixed>|null
+	 *
 	 * @throws Exception
 	 */
 	public function listFolder(?string $folder = null): ?array
 	{
-
 		// first compare with each folder in root
 		if (is_null($folder)) {
 			return $this->getContent(0);
@@ -76,18 +91,16 @@ final class Folder
 			$folder = strval(pathinfo($folder, PATHINFO_DIRNAME));
 		}
 
-		$path_parts = array_reverse(explode(DIRECTORY_SEPARATOR, $folder));
+		$pathParts = array_reverse(explode(DIRECTORY_SEPARATOR, $folder));
 
 		$directory = null;
 		$currentFolderId = 0;
 
-		while (($folderName = array_pop($path_parts))) { /* current directory */
-
+		while (($folderName = array_pop($pathParts))) { /* current directory */
 			$folderItems = $this->getContent($currentFolderId);
 
 			foreach ($folderItems as $item) {
-
-				$directory = (array)$item;
+				$directory = (array) $item;
 				if (isset($directory['isfolder']) && boolval($directory['isfolder']) === true) {
 					$name = $directory['name'] ?? null;
 					$folderId = $directory['folderid'] ?? null;
@@ -106,6 +119,7 @@ final class Folder
 	 * List root folders
 	 *
 	 * @return array<mixed>
+	 *
 	 * @throws Exception
 	 */
 	public function listRoot(): array
@@ -117,6 +131,7 @@ final class Folder
 	 * Get folder content
 	 *
 	 * @return array<mixed>
+	 *
 	 * @throws Exception
 	 */
 	public function getContent(int $folderId): array
@@ -127,28 +142,32 @@ final class Folder
 		$contents = $metadata instanceof stdClass ? ($metadata->contents ?? null) : null;
 
 		if (!is_array($contents)) {
-			throw new Exception("Failed to get folder content!");
+			throw new Exception('Failed to get folder content!');
 		}
 
 		return $contents;
 	}
 
 	/**
-	 * @return stdClass|int  Folder ID or response Data
+	 * @return stdClass|int Folder ID or response Data
+	 *
 	 * @throws Exception
 	 */
-	public function create(?string $name, ?int $parent = 0): stdClass|int
+	public function create(
+		?string $name,
+		?int $parent = 0,
+	): stdClass|int
 	{
 		if ($name === null || $name === '') {
-			throw new InvalidArgumentException("Please, provide valid folder name");
+			throw new InvalidArgumentException('Please, provide valid folder name');
 		}
 
-		$params = array(
-			"name" => $name,
-			"folderid" => $parent
-		);
+		$params = [
+			'name' => $name,
+			'folderid' => $parent,
+		];
 
-		$response = $this->request->get("createfolder", $params);
+		$response = $this->request->get('createfolder', $params);
 
 		return $this->folderIdOrResponse($response);
 	}
@@ -158,18 +177,21 @@ final class Folder
 	 *
 	 * @throws Exception
 	 */
-	public function rename(int $folderId, ?string $name): stdClass|int
+	public function rename(
+		int $folderId,
+		?string $name,
+	): stdClass|int
 	{
 		if ($name === null || $name === '') {
-			throw new InvalidArgumentException("Please, provide folder name");
+			throw new InvalidArgumentException('Please, provide folder name');
 		}
 
-		$params = array(
-			"toname" => $name,
-			"folderid" => $folderId
-		);
+		$params = [
+			'toname' => $name,
+			'folderid' => $folderId,
+		];
 
-		$response = $this->request->get("renamefolder", $params);
+		$response = $this->request->get('renamefolder', $params);
 
 		return $this->folderIdOrResponse($response);
 	}
@@ -179,14 +201,17 @@ final class Folder
 	 *
 	 * @throws Exception
 	 */
-	public function move(int $folderId, int $newParent): stdClass|int
+	public function move(
+		int $folderId,
+		int $newParent,
+	): stdClass|int
 	{
-		$params = array(
-			"tofolderid" => $newParent,
-			"folderid" => $folderId
-		);
+		$params = [
+			'tofolderid' => $newParent,
+			'folderid' => $folderId,
+		];
 
-		$response = $this->request->get("renamefolder", $params);
+		$response = $this->request->get('renamefolder', $params);
 
 		return $this->folderIdOrResponse($response);
 	}
@@ -198,7 +223,7 @@ final class Folder
 	 */
 	public function delete(int $folderId): bool|stdClass
 	{
-		$response = $this->request->get("deletefolder", array("folderid" => $folderId));
+		$response = $this->request->get('deletefolder', ['folderid' => $folderId]);
 
 		$metadata = $response->metadata ?? null;
 		$isDeleted = $metadata instanceof stdClass ? ($metadata->isdeleted ?? null) : null;
@@ -213,7 +238,7 @@ final class Folder
 	 */
 	public function deleteRecursive(int $folderId): stdClass
 	{
-		return $this->request->get("deletefolderrecursive", array("folderid" => $folderId));
+		return $this->request->get('deletefolderrecursive', ['folderid' => $folderId]);
 	}
 
 	/**
@@ -228,4 +253,5 @@ final class Folder
 
 		return is_int($folderId) ? $folderId : $response;
 	}
+
 }

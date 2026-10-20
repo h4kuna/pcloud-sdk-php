@@ -1,13 +1,23 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace pCloud\Sdk;
 
 use CurlHandle;
 use InvalidArgumentException;
-use Throwable;
 use stdClass;
+use Throwable;
+use function curl_exec;
+use function curl_getinfo;
+use function curl_init;
+use function curl_setopt;
+use function intval;
+use function is_bool;
+use function is_string;
+use function range;
+use const CURLINFO_CONTENT_TYPE;
+use const CURLINFO_HTTP_CODE;
+use const CURLINFO_RESPONSE_CODE;
+use const CURLOPT_HEADER;
 
 /**
  * cURL class
@@ -15,6 +25,7 @@ use stdClass;
  */
 class Curl
 {
+
 	/**
 	 * Holds the cURL
 	 */
@@ -25,17 +36,15 @@ class Curl
 	 *
 	 * @var array<int, string> $headers
 	 */
-	private array $headers = array();
+	private array $headers = [];
 
 	/**
-	 * Class constructor
-	 *
 	 * @throws Exception
 	 */
-	function __construct(string $url)
+	public function __construct(string $url)
 	{
 		if ($url === '') {
-			throw new InvalidArgumentException("Invalid URL");
+			throw new InvalidArgumentException('Invalid URL');
 		}
 
 		$curl = curl_init($url);
@@ -49,7 +58,10 @@ class Curl
 	/**
 	 * Set cURL option
 	 */
-	public function setOption(int $option, mixed $value): void
+	public function setOption(
+		int $option,
+		mixed $value,
+	): void
 	{
 		curl_setopt($this->curl, $option, $value);
 	}
@@ -80,7 +92,7 @@ class Curl
 			$response = new Response($r, $httpCode, is_string($contentType) ? $contentType : '');
 			return $response->get();
 		} else {
-			throw new Exception("Connection lost!");
+			throw new Exception('Connection lost!');
 		}
 	}
 
@@ -101,4 +113,5 @@ class Curl
 			return false;
 		}
 	}
+
 }

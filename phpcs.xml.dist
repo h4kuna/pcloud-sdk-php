@@ -11,5 +11,21 @@
 	<file>test/</file>
 
 	<config name="installed_paths" value="vendor/slevomat/coding-standard,vendor/shipmonk/coding-standard"/>
-	<rule ref="ShipMonkCodingStandard"/>
+	<rule ref="ShipMonkCodingStandard">
+		<exclude name="Generic.WhiteSpace.DisallowTabIndent"/>
+	</rule>
+
+	<!-- Indent with tabs -->
+	<arg name="tab-width" value="4"/>
+	<rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
+	<rule ref="Generic.WhiteSpace.ScopeIndent">
+		<properties>
+			<property name="tabIndent" value="true"/>
+		</properties>
+	</rule>
+
+	<!-- Method names of a stream wrapper are dictated by PHP -->
+	<rule ref="PSR1.Methods.CamelCapsMethodName">
+		<exclude-pattern>test/MemoryStream.php</exclude-pattern>
+	</rule>
 </ruleset>

@@ -1,10 +1,11 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace pCloud\Sdk;
 
 use stdClass;
+use function is_int;
+use function is_string;
+use function sprintf;
 
 /**
  * User class
@@ -20,14 +21,12 @@ final class User
 	private stdClass $userInfo;
 
 	/**
-	 * Class constructor
-	 *
 	 * @throws Exception
 	 */
-	function __construct(App $app)
+	public function __construct(App $app)
 	{
 		$this->request = new Request($app);
-		$this->userInfo = $this->request->get("userinfo");
+		$this->userInfo = $this->request->get('userinfo');
 	}
 
 	/**
@@ -45,7 +44,7 @@ final class User
 	 */
 	public function getUserId(): int
 	{
-		return $this->intValue($this->userInfo->userid ?? null, "userid");
+		return $this->intValue($this->userInfo->userid ?? null, 'userid');
 	}
 
 	/**
@@ -55,7 +54,7 @@ final class User
 	 */
 	public function getUserEmail(): string
 	{
-		return $this->stringValue($this->userInfo->email ?? null, "email");
+		return $this->stringValue($this->userInfo->email ?? null, 'email');
 	}
 
 	/**
@@ -65,17 +64,15 @@ final class User
 	 */
 	public function getUsedQuota(): int
 	{
-		return $this->intValue($this->userInfo->usedquota ?? null, "usedquota");
+		return $this->intValue($this->userInfo->usedquota ?? null, 'usedquota');
 	}
 
 	/**
-	 * Get quota
-	 *
 	 * @throws Exception
 	 */
 	public function getQuota(): int
 	{
-		return $this->intValue($this->userInfo->quota ?? null, "quota");
+		return $this->intValue($this->userInfo->quota ?? null, 'quota');
 	}
 
 	/**
@@ -85,16 +82,19 @@ final class User
 	 */
 	public function getPublicLinkQuota(): int
 	{
-		return $this->intValue($this->userInfo->publiclinkquota ?? null, "publiclinkquota");
+		return $this->intValue($this->userInfo->publiclinkquota ?? null, 'publiclinkquota');
 	}
 
 	/**
 	 * @throws Exception
 	 */
-	private function intValue(mixed $value, string $field): int
+	private function intValue(
+		mixed $value,
+		string $field,
+	): int
 	{
 		if (!is_int($value)) {
-			throw new Exception(sprintf("Unexpected value of %s in user info", $field));
+			throw new Exception(sprintf('Unexpected value of %s in user info', $field));
 		}
 
 		return $value;
@@ -103,12 +103,16 @@ final class User
 	/**
 	 * @throws Exception
 	 */
-	private function stringValue(mixed $value, string $field): string
+	private function stringValue(
+		mixed $value,
+		string $field,
+	): string
 	{
 		if (!is_string($value)) {
-			throw new Exception(sprintf("Unexpected value of %s in user info", $field));
+			throw new Exception(sprintf('Unexpected value of %s in user info', $field));
 		}
 
 		return $value;
 	}
+
 }

@@ -1,10 +1,12 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace pCloud\Sdk;
 
 use stdClass;
+use function get_object_vars;
+use function is_string;
+use function json_decode;
+use function strpos;
 
 /**
  * Class Response
@@ -22,10 +24,11 @@ final class Response
 
 	private string $contentType;
 
-	/**
-	 * Class constructor
-	 */
-	function __construct(string $response, int $httpCode, string $contentType)
+	public function __construct(
+		string $response,
+		int $httpCode,
+		string $contentType,
+	)
 	{
 		$this->response = $response;
 		$this->httpCode = $httpCode;
@@ -35,18 +38,16 @@ final class Response
 	}
 
 	/**
-	 * Get method
-	 *
 	 * @throws Exception
 	 */
 	public function get(): stdClass
 	{
 		if ($this->httpCode !== 200) {
-			throw new Exception("HTTP Code = " . $this->httpCode);
+			throw new Exception('HTTP Code = ' . $this->httpCode);
 		}
 
 		if (!$this->response instanceof stdClass) {
-			throw new Exception("Unexpected response format");
+			throw new Exception('Unexpected response format');
 		}
 
 		if (($this->response->result ?? null) === 0) {
@@ -55,7 +56,7 @@ final class Response
 
 		$error = $this->response->error ?? null;
 
-		throw new Exception(is_string($error) ? $error : "Unexpected response format");
+		throw new Exception(is_string($error) ? $error : 'Unexpected response format');
 	}
 
 	/**
@@ -63,7 +64,7 @@ final class Response
 	 */
 	private function parseJson(): void
 	{
-		if (is_string($this->response) && strpos($this->contentType, "application/json") !== false) {
+		if (is_string($this->response) && strpos($this->contentType, 'application/json') !== false) {
 			$decoded = json_decode($this->response);
 			if ($decoded instanceof stdClass) {
 				$this->response = $decoded;
@@ -78,9 +79,12 @@ final class Response
 	{
 		$return = new stdClass();
 		foreach (get_object_vars($response) as $key => $value) {
-			if ($key === "result") continue;
+			if ($key === 'result') {
+				continue;
+			}
 			$return->{$key} = $value;
 		}
 		return $return;
 	}
+
 }

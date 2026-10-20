@@ -1,16 +1,32 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace pCloud\Sdk;
 
 use stdClass;
+use function abs;
+use function curl_exec;
+use function curl_getinfo;
+use function curl_init;
+use function curl_setopt;
+use function get_object_vars;
+use function http_build_query;
+use function intval;
+use function is_int;
+use function is_string;
+use function json_decode;
+use function sprintf;
+use function strpos;
+use function trim;
+use const CURLINFO_CONTENT_TYPE;
+use const CURLOPT_RETURNTRANSFER;
+use const CURLOPT_SSL_VERIFYPEER;
 
 /**
  * Main App class
  */
 final class App
 {
+
 	/**
 	 * App key. In https://docs.pcloud.com/my_apps/ you will find it also as "Client ID"
 	 */
@@ -76,9 +92,9 @@ final class App
 	/**
 	 * Set Redirect URL
 	 */
-	public function setRedirectURI(string $redirect_uri): void
+	public function setRedirectURI(string $redirectUri): void
 	{
-		$this->redirectUri = trim($redirect_uri);
+		$this->redirectUri = trim($redirectUri);
 	}
 
 	/**
@@ -92,9 +108,9 @@ final class App
 	/**
 	 * Sets the Access Token
 	 */
-	public function setAccessToken(string $access_token): void
+	public function setAccessToken(string $accessToken): void
 	{
-		$this->accessToken = trim($access_token);
+		$this->accessToken = trim($accessToken);
 	}
 
 	/**
@@ -129,37 +145,41 @@ final class App
 	 */
 	public function getAuthorizeCodeUrl(): string
 	{
-		$this->validParams(["appKey" => $this->appKey]);
+		$this->validParams(['appKey' => $this->appKey]);
 
-		$params = array(
-			"client_id" => $this->appKey,
-			"response_type" => "code"
-		);
+		$params = [
+			'client_id' => $this->appKey,
+			'response_type' => 'code',
+		];
 
 		if ($this->redirectUri !== '') {
-			$params["redirect_uri"] = $this->redirectUri;
+			$params['redirect_uri'] = $this->redirectUri;
 		}
 
-		return "https://my.pcloud.com/oauth2/authorize?" . http_build_query($params);
+		return 'https://my.pcloud.com/oauth2/authorize?' . http_build_query($params);
 	}
 
 	/**
 	 * @return array{access_token: string, locationid: int}
+	 *
 	 * @throws Exception
 	 */
-	public function getTokenFromCode(string $code, string|int $locationid): array
+	public function getTokenFromCode(
+		string $code,
+		string|int $locationid,
+	): array
 	{
-		$this->validParams(["appKey" => $this->appKey, "appSecret" => $this->appSecret]);
+		$this->validParams(['appKey' => $this->appKey, 'appSecret' => $this->appSecret]);
 
-		$params = array(
-			"client_id" => $this->appKey,
-			"client_secret" => $this->appSecret,
-			"code" => $code
-		);
+		$params = [
+			'client_id' => $this->appKey,
+			'client_secret' => $this->appSecret,
+			'code' => $code,
+		];
 
 		$host = Config::getApiHostByLocationId(intval($locationid));
 
-		$url = $host . "/oauth2_token?" . http_build_query($params);
+		$url = $host . '/oauth2_token?' . http_build_query($params);
 
 		$curl = curl_init($url);
 
@@ -170,26 +190,27 @@ final class App
 
 		$contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
 
-		if (!is_string($response) || !is_string($contentType) || strpos($contentType, "application/json") === false) {
-			throw new Exception("Unexpected response from " . $host);
+		if (!is_string($response) || !is_string($contentType) || strpos($contentType, 'application/json') === false) {
+			throw new Exception('Unexpected response from ' . $host);
 		}
 
 		$data = json_decode($response);
 
 		if (!$data instanceof stdClass) {
-			throw new Exception("Unexpected response from " . $host);
+			throw new Exception('Unexpected response from ' . $host);
 		}
 
-		$accessToken = $data->access_token ?? null;
-		$locationId = $data->locationid ?? null;
+		$fields = get_object_vars($data);
+		$accessToken = $fields['access_token'] ?? null;
+		$locationId = $fields['locationid'] ?? null;
 
 		if (($data->result ?? null) === 0 && is_string($accessToken) && is_int($locationId)) {
-			return array("access_token" => $accessToken, "locationid" => $locationId);
+			return ['access_token' => $accessToken, 'locationid' => $locationId];
 		}
 
 		$error = $data->error ?? null;
 
-		throw new Exception(is_string($error) ? $error : "Unexpected response from " . $host);
+		throw new Exception(is_string($error) ? $error : 'Unexpected response from ' . $host);
 	}
 
 	/**
@@ -219,8 +240,9 @@ final class App
 	{
 		foreach ($params as $name => $value) {
 			if ($value === '') {
-				throw new Exception(sprintf("%s not found", $name));
+				throw new Exception(sprintf('%s not found', $name));
 			}
 		}
 	}
+
 }

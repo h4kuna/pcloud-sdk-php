@@ -1,10 +1,29 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace pCloud\Sdk;
 
 use stdClass;
+use function end;
+use function explode;
+use function fclose;
+use function feof;
+use function file_exists;
+use function fopen;
+use function fread;
+use function fwrite;
+use function is_array;
+use function is_bool;
+use function is_dir;
+use function is_file;
+use function is_int;
+use function is_readable;
+use function is_string;
+use function mkdir;
+use function rawurldecode;
+use function rename;
+use function sleep;
+use function str_replace;
+use const DIRECTORY_SEPARATOR;
 
 /**
  * Class File
@@ -29,7 +48,7 @@ final class File
 	/**
 	 * File Class constructor
 	 */
-	function __construct(App $app)
+	public function __construct(App $app)
 	{
 		$this->request = new Request($app);
 		$this->partSize = Config::$filePartSize;
@@ -42,20 +61,20 @@ final class File
 	 */
 	public function getLink(int $fileId): string
 	{
-		$params = array(
-			"fileid" => $fileId
-		);
+		$params = [
+			'fileid' => $fileId,
+		];
 
-		$response = $this->request->get("getfilelink", $params);
+		$response = $this->request->get('getfilelink', $params);
 
 		$hosts = $response->hosts ?? null;
 		$path = $response->path ?? null;
 
 		if (is_array($hosts) && is_string($hosts[0] ?? null) && is_string($path)) {
-			return "https://" . $hosts[0] . $path;
+			return 'https://' . $hosts[0] . $path;
 		}
 
-		throw new Exception("Failed to get file link!");
+		throw new Exception('Failed to get file link!');
 	}
 
 	/**
@@ -66,12 +85,15 @@ final class File
 	 *
 	 * @throws Exception
 	 */
-	public function download(int $fileId, string $destination = ""): bool
+	public function download(
+		int $fileId,
+		string $destination = '',
+	): bool
 	{
 		$fileLink = $this->getLink($fileId);
 
 		if ($destination !== '') {
-			$destination = str_replace(array("\\", "/"), DIRECTORY_SEPARATOR, $destination) . DIRECTORY_SEPARATOR;
+			$destination = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $destination) . DIRECTORY_SEPARATOR;
 		}
 
 		if ($destination !== '' && !is_dir($destination)) {
@@ -80,11 +102,11 @@ final class File
 			}
 		}
 
-		$parts = explode("/", $fileLink);
+		$parts = explode('/', $fileLink);
 		$path = $destination . rawurldecode(end($parts));
 
-		$source = fopen($fileLink, "rb");
-		$file = fopen($path . ".download", "wb");
+		$source = fopen($fileLink, 'rb');
+		$file = fopen($path . '.download', 'wb');
 		if ($source === false || $file === false) {
 			throw new Exception("Couldn't open the source or the destination file");
 		}
@@ -99,40 +121,44 @@ final class File
 		fclose($file);
 		fclose($source);
 
-		return rename($path . ".download", $path);
+		return rename($path . '.download', $path);
 	}
 
 	/**
 	 * @throws Exception
 	 */
-	public function upload(string $path, int $folderId = 0, ?string $filename = null): stdClass
+	public function upload(
+		string $path,
+		int $folderId = 0,
+		?string $filename = null,
+	): stdClass
 	{
 		if (!file_exists($path) || !is_file($path) || !is_readable($path)) {
-			throw new Exception("Invalid file");
+			throw new Exception('Invalid file');
 		}
 
-		$path = str_replace(array("\\", "_"), DIRECTORY_SEPARATOR, $path);
+		$path = str_replace(['\\', '_'], DIRECTORY_SEPARATOR, $path);
 		$parts = explode(DIRECTORY_SEPARATOR, $path);
 
 		if ($filename === null || $filename === '') {
 			$filename = end($parts);
 		}
 
-		$upload = $this->_createUpload();
+		$upload = $this->createUpload();
 
 		$uploadId = $upload->uploadid ?? null;
 		if (!is_int($uploadId)) {
 			throw new Exception('File -> upload -> "createUpload" not returning the expected data!');
 		}
 
-		$params = array(
-			"uploadid" => $uploadId,
-			"uploadoffset" => 0
-		);
+		$params = [
+			'uploadid' => $uploadId,
+			'uploadoffset' => 0,
+		];
 
 		$numFailures = 0;
 
-		$file = fopen($path, "r");
+		$file = fopen($path, 'r');
 		if ($file === false) {
 			throw new Exception("Couldn't open the file");
 		}
@@ -144,9 +170,9 @@ final class File
 			}
 			do {
 				try {
-					$this->_write($content, $params);
+					$this->write($content, $params);
 
-					$params["uploadoffset"] += $this->partSize;
+					$params['uploadoffset'] += $this->partSize;
 
 					$numFailures = 0;
 					continue 2;
@@ -162,7 +188,7 @@ final class File
 		}
 
 		if (@fclose($file)) {
-			return $this->_save($uploadId, $filename, $folderId);
+			return $this->save($uploadId, $filename, $folderId);
 		}
 
 		return new stdClass();
@@ -175,7 +201,7 @@ final class File
 	 */
 	public function delete(int $fileId): bool|stdClass
 	{
-		$response = $this->request->get("deletefile", array("fileid" => $fileId));
+		$response = $this->request->get('deletefile', ['fileid' => $fileId]);
 
 		$metadata = $response->metadata ?? null;
 		$isDeleted = $metadata instanceof stdClass ? ($metadata->isdeleted ?? null) : null;
@@ -188,18 +214,21 @@ final class File
 	 *
 	 * @throws Exception
 	 */
-	public function rename(int $fileId, string $name): stdClass
+	public function rename(
+		int $fileId,
+		string $name,
+	): stdClass
 	{
 		if ($name === '') {
-			throw new Exception("Please, provide valid file name!");
+			throw new Exception('Please, provide valid file name!');
 		}
 
-		$params = array(
-			"fileid" => $fileId,
-			"toname" => $name
-		);
+		$params = [
+			'fileid' => $fileId,
+			'toname' => $name,
+		];
 
-		return $this->request->get("renamefile", $params);
+		return $this->request->get('renamefile', $params);
 	}
 
 	/**
@@ -207,14 +236,17 @@ final class File
 	 *
 	 * @throws Exception
 	 */
-	public function move(int $fileId, int $folderId): stdClass
+	public function move(
+		int $fileId,
+		int $folderId,
+	): stdClass
 	{
-		$params = array(
-			"fileid" => $fileId,
-			"tofolderid" => $folderId
-		);
+		$params = [
+			'fileid' => $fileId,
+			'tofolderid' => $folderId,
+		];
 
-		return $this->request->get("renamefile", $params);
+		return $this->request->get('renamefile', $params);
 	}
 
 	/**
@@ -222,14 +254,17 @@ final class File
 	 *
 	 * @throws Exception
 	 */
-	public function copy(int $fileId, int $folderId): stdClass
+	public function copy(
+		int $fileId,
+		int $folderId,
+	): stdClass
 	{
-		$params = array(
-			"fileid" => $fileId,
-			"tofolderid" => $folderId
-		);
+		$params = [
+			'fileid' => $fileId,
+			'tofolderid' => $folderId,
+		];
 
-		return $this->request->get("copyfile", $params);
+		return $this->request->get('copyfile', $params);
 	}
 
 	/**
@@ -239,7 +274,7 @@ final class File
 	 */
 	public function getInfo(int $fileId): stdClass
 	{
-		return $this->request->get("checksumfile", array("fileid" => $fileId));
+		return $this->request->get('checksumfile', ['fileid' => $fileId]);
 	}
 
 	/**
@@ -247,23 +282,27 @@ final class File
 	 *
 	 * @throws Exception
 	 */
-	private function _createUpload(): stdClass
+	private function createUpload(): stdClass
 	{
-		return $this->request->get("upload_create");
+		return $this->request->get('upload_create');
 	}
 
 	/**
 	 * @throws Exception
 	 */
-	private function _save(int $uploadId, string $name, int $folderId): stdClass
+	private function save(
+		int $uploadId,
+		string $name,
+		int $folderId,
+	): stdClass
 	{
-		$params = array(
-			"uploadid" => $uploadId,
-			"name" => $name,
-			"folderid" => $folderId
-		);
+		$params = [
+			'uploadid' => $uploadId,
+			'name' => $name,
+			'folderid' => $folderId,
+		];
 
-		return $this->request->get("upload_save", $params);
+		return $this->request->get('uploadsave', $params);
 	}
 
 	/**
@@ -273,8 +312,12 @@ final class File
 	 *
 	 * @throws Exception
 	 */
-	private function _write(string $content, array $params): void
+	private function write(
+		string $content,
+		array $params,
+	): void
 	{
-		$this->request->put("upload_write", $content, $params);
+		$this->request->put('uploadwrite', $content, $params);
 	}
+
 }

@@ -1,37 +1,46 @@
-<?php
+<?php declare(strict_types = 1);
 
-declare(strict_types=1);
+namespace pCloud\Sdk\Tests;
 
+use pCloud\Sdk\App;
+use pCloud\Sdk\Config;
+use pCloud\Sdk\Exception;
+use pCloud\Sdk\TestCurl;
+use pCloud\Sdk\User;
 use PHPUnit\Framework\TestCase;
+use function getenv;
+use function intval;
+use const DIRECTORY_SEPARATOR;
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . "AssertsRequestUrl.php";
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'AssertsRequestUrl.php';
 
 /**
  * User tests
  */
 final class UserTest extends TestCase
 {
+
 	use AssertsRequestUrl;
 
-	private pCloud\Sdk\App $pCloudApp;
+	private App $pCloudApp;
 
-	private pCloud\Sdk\User $instance;
+	private User $instance;
 
 	/**
-	 * @throws \pCloud\Sdk\Exception
+	 * @throws Exception
 	 */
 	public function setUp(): void
 	{
-		$access_token = getenv('ACCESS_TOKEN');
-		self::assertIsString($access_token);
-		$locationid = intval(getenv('LOCATION'));
+		$accessToken = getenv('ACCESS_TOKEN');
+		self::assertIsString($accessToken);
+		$locationId = intval(getenv('LOCATION'));
 
-		$this->pCloudApp = new pCloud\Sdk\App();
-		$this->pCloudApp->setAccessToken($access_token);
-		$this->pCloudApp->setLocationId($locationid);
+		$this->pCloudApp = new App();
+		$this->pCloudApp->setAccessToken($accessToken);
+		$this->pCloudApp->setLocationId($locationId);
 
-		pCloud\Sdk\Config::$curlLib = "pCloud\Sdk\TestCurl";
-		$this->instance = new pCloud\Sdk\User($this->pCloudApp);
+		Config::$curlLib = TestCurl::class;
+		$this->instance = new User($this->pCloudApp);
 	}
 
 	public function tearDown(): void
@@ -41,10 +50,10 @@ final class UserTest extends TestCase
 
 	public function testUserInfo(): void
 	{
-
-		$expected = pCloud\Sdk\Config::getApiHostByLocationId($this->pCloudApp->getLocationId()) . "userinfo";
+		$expected = Config::getApiHostByLocationId($this->pCloudApp->getLocationId()) . 'userinfo';
 		$query = $this->instance->getUserInfo();
 
 		self::assertRequestUrl($expected, $query);
 	}
+
 }

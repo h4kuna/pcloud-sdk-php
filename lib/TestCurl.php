@@ -1,10 +1,17 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace pCloud\Sdk;
 
 use stdClass;
+use function count;
+use function curl_getinfo;
+use function explode;
+use function http_build_query;
+use function implode;
+use function parse_str;
+use function strlen;
+use function strval;
+use const CURLINFO_EFFECTIVE_URL;
 
 /**
  * This class is used for testing perposes
@@ -12,7 +19,7 @@ use stdClass;
 final class TestCurl extends Curl
 {
 
-	function __construct(string $url)
+	public function __construct(string $url)
 	{
 		parent::__construct($url);
 	}
@@ -26,12 +33,12 @@ final class TestCurl extends Curl
 		$item->url = $url;
 
 		$metadata = new stdClass();
-		$metadata->contents = array($item);
+		$metadata->contents = [$item];
 
 		$result = new stdClass();
 		$result->url = $url;
-		$result->hosts = array("test.pcloud.com");
-		$result->path = "/file.txt";
+		$result->hosts = ['test.pcloud.com'];
+		$result->path = '/file.txt';
 		$result->metadata = $metadata;
 
 		return $result;
@@ -42,16 +49,16 @@ final class TestCurl extends Curl
 	 */
 	private function parseUrl(string $url): string
 	{
-
-		$parts = explode("?", $url);
+		$parts = explode('?', $url);
 
 		if (count($parts) === 1) {
 			return strval($parts[0]);
 		} else {
 			parse_str($parts[1], $query);
-			unset($query["access_token"]);
+			unset($query['access_token']);
 			$parts[1] = http_build_query($query);
-			return strlen($parts[1]) === 0 ? $parts[0] : implode("?", $parts);
+			return strlen($parts[1]) === 0 ? $parts[0] : implode('?', $parts);
 		}
 	}
+
 }

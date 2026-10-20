@@ -1,6 +1,9 @@
-<?php
+<?php declare(strict_types = 1);
 
-declare(strict_types=1);
+namespace pCloud\Sdk\Tests;
+
+use function strlen;
+use function substr;
 
 /**
  * Stream wrapper, which serves the content of $content instead of the real remote file
@@ -17,7 +20,12 @@ final class MemoryStream
 
 	private int $position = 0;
 
-	public function stream_open(string $path, string $mode, int $options, ?string &$openedPath): bool
+	public function stream_open(
+		string $path,
+		string $mode,
+		int $options,
+		?string &$openedPath,
+	): bool
 	{
 		$this->position = 0;
 
@@ -42,6 +50,7 @@ final class MemoryStream
 	 */
 	public function stream_stat(): array
 	{
-		return array("size" => strlen(self::$content));
+		return ['size' => strlen(self::$content)];
 	}
+
 }

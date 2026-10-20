@@ -1,10 +1,19 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace pCloud\Sdk;
 
 use stdClass;
+use function array_merge;
+use function http_build_query;
+use const CURLOPT_BINARYTRANSFER;
+use const CURLOPT_CONNECTTIMEOUT;
+use const CURLOPT_CUSTOMREQUEST;
+use const CURLOPT_HTTPHEADER;
+use const CURLOPT_POSTFIELDS;
+use const CURLOPT_RETURNTRANSFER;
+use const CURLOPT_SSL_VERIFYPEER;
+use const CURLOPT_TIMEOUT;
+use const CURLOPT_USERAGENT;
 
 /**
  * Class Request
@@ -31,15 +40,14 @@ final class Request
 	private int $curlExecutionTimeout;
 
 	/**
-	 * Class constructor
 	 * collects the host and the initial global parameters
 	 */
-	function __construct(App $app)
+	public function __construct(App $app)
 	{
 		$this->host = Config::getApiHostByLocationId($app->getLocationId());
-		$this->globalParams = array(
-			"access_token" => $app->getAccessToken()
-		);
+		$this->globalParams = [
+			'access_token' => $app->getAccessToken(),
+		];
 
 		$this->curlExecutionTimeout = $app->getCurlExecutionTimeout();
 	}
@@ -51,9 +59,12 @@ final class Request
 	 *
 	 * @throws Exception
 	 */
-	public function get(string $method, array $params = array()): stdClass
+	public function get(
+		string $method,
+		array $params = [],
+	): stdClass
 	{
-		$curl = $this->_buildCurl($this->_prepareURL($method, array_merge($this->globalParams, $params)));
+		$curl = $this->buildCurl($this->prepareUrl($method, array_merge($this->globalParams, $params)));
 
 		return $curl->exec();
 	}
@@ -65,11 +76,14 @@ final class Request
 	 *
 	 * @throws Exception
 	 */
-	public function post(string $method, ?array $params = array()): stdClass
+	public function post(
+		string $method,
+		?array $params = [],
+	): stdClass
 	{
-		$curl = $this->_buildCurl($this->_prepareURL($method, $this->globalParams));
+		$curl = $this->buildCurl($this->prepareUrl($method, $this->globalParams));
 
-		$curl->setOption(CURLOPT_CUSTOMREQUEST, "POST");
+		$curl->setOption(CURLOPT_CUSTOMREQUEST, 'POST');
 		$curl->setOption(CURLOPT_POSTFIELDS, $params);
 
 		return $curl->exec();
@@ -82,14 +96,17 @@ final class Request
 	 *
 	 * @throws Exception
 	 */
-	public function put(string $method, string $content, array $params = array()): stdClass
+	public function put(
+		string $method,
+		string $content,
+		array $params = [],
+	): stdClass
 	{
+		$curl = $this->buildCurl($this->prepareUrl($method, array_merge($this->globalParams, $params)));
 
-		$curl = $this->_buildCurl($this->_prepareURL($method, array_merge($this->globalParams, $params)));
-
-		$curl->setOption(CURLOPT_CUSTOMREQUEST, "PUT");
+		$curl->setOption(CURLOPT_CUSTOMREQUEST, 'PUT');
 		$curl->setOption(CURLOPT_POSTFIELDS, $content);
-		$curl->setOption(CURLOPT_HTTPHEADER, array("Content-Type: text/html"));
+		$curl->setOption(CURLOPT_HTTPHEADER, ['Content-Type: text/html']);
 		$curl->setOption(CURLOPT_BINARYTRANSFER, true); // TODO: deprecated !
 
 		return $curl->exec();
@@ -100,11 +117,11 @@ final class Request
 	 *
 	 * @param string $endPoint the final cURL URL endpoint
 	 */
-	private function _buildCurl(string $endPoint): Curl
+	private function buildCurl(string $endPoint): Curl
 	{
 		$curl = new Config::$curlLib($endPoint);
 
-		$curl->setOption(CURLOPT_USERAGENT, "pCloud PHP SDK");
+		$curl->setOption(CURLOPT_USERAGENT, 'pCloud PHP SDK');
 		$curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
 		$curl->setOption(CURLOPT_RETURNTRANSFER, true);
 
@@ -122,14 +139,18 @@ final class Request
 	 *
 	 * @param array<string, mixed> $params
 	 */
-	private function _prepareURL(string $method, array $params = array()): string
+	private function prepareUrl(
+		string $method,
+		array $params = [],
+	): string
 	{
 		$url = $this->host . $method;
 
-		if ($params !== array()) {
-			$url .= "?" . http_build_query($params);
+		if ($params !== []) {
+			$url .= '?' . http_build_query($params);
 		}
 
 		return $url;
 	}
+
 }
