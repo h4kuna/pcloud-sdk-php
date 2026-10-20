@@ -19,11 +19,11 @@ A PHP library to access [pCloud API](https://docs.pcloud.com/)
 <span id="system-requirements"></span>
 # System requirements
   
-  ### PHP 7.1.0 or higher is Required
+  ### PHP 8.2.0 or higher is Required
   ~~~~
   Likelihood Of Impact: Critical
   ~~~~
-  * The new minimum PHP version is now 7.1.0.
+  * The new minimum PHP version is now 8.2.0.
   * PHP [cURL extension](http://php.net/manual/en/curl.setup.php)
 
 ---
