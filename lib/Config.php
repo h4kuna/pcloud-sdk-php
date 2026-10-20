@@ -24,7 +24,7 @@ class Config {
 	 */
 	static public $curllib = "pCloud\Sdk\Curl";
 	/**
-	 * @var int
+	 * @var int<1, max>
 	 */
 	static public $filePartSize = 10485760;
 

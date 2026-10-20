@@ -95,7 +95,7 @@ class Curl
 		$contentType = curl_getinfo($this->curl, CURLINFO_CONTENT_TYPE);
 
 		if (!is_bool($r)) {
-			$response = new Response($r, $httpCode, $contentType);
+			$response = new Response($r, $httpCode, is_string($contentType) ? $contentType : '');
 			return $response->get();
 		} else {
 			throw new Exception("Connection lost!");

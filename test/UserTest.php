@@ -25,6 +25,7 @@ class UserTest extends TestCase
 	public function setUp(): void
 	{
 		$access_token = getenv('ACCESS_TOKEN');
+		self::assertIsString($access_token);
 		$locationid = intval(getenv('LOCATION'));
 
 		$this->pCloudApp = new pCloud\Sdk\App();

@@ -213,7 +213,7 @@ class App
 			"code" => $code
 		);
 
-		$host = Config::getApiHostByLocationId($locationid);
+		$host = Config::getApiHostByLocationId(intval($locationid));
 
 		$url = $host . "/oauth2_token?" . http_build_query($params);
 
@@ -224,9 +224,13 @@ class App
 
 		$response = curl_exec($curl);
 
-		if (strpos(curl_getinfo($curl, CURLINFO_CONTENT_TYPE), "application/json") !== false) {
-			$response = json_decode($response);
+		$contentType = curl_getinfo($curl, CURLINFO_CONTENT_TYPE);
+
+		if (!is_string($response) || !is_string($contentType) || strpos($contentType, "application/json") === false) {
+			throw new Exception("Unexpected response from " . $host);
 		}
+
+		$response = json_decode($response);
 
 		if ($response->result === 0) {
 			return array("access_token" => $response->access_token, "locationid" => $response->locationid);

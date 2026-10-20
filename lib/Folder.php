@@ -72,13 +72,13 @@ class Folder
 	 * list files in folder identified by name
 	 * (start from the root, match directory name, ...)
 	 *
-	 * @param int|string $folder
+	 * @param string|null $folder
 	 *
 	 * @return array<mixed>|null
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function listFolder($folder = null): ?array
+	public function listFolder(?string $folder = null): ?array
 	{
 
 		// first compare with each folder in root

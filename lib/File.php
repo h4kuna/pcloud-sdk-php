@@ -16,7 +16,7 @@ class File
 	/**
 	 * The size in bytes of each uploaded/downloaded chunk
 	 *
-	 * @var int $partSize
+	 * @var int<1, max> $partSize
 	 */
 	private $partSize;
 
@@ -93,8 +93,15 @@ class File
 
 		$source = fopen($fileLink, "rb");
 		$file = fopen($path . ".download", "wb");
+		if ($source === false || $file === false) {
+			throw new Exception("Couldn't open the source or the destination file");
+		}
+
 		while (!feof($source)) {
 			$content = fread($source, $this->partSize);
+			if ($content === false) {
+				throw new Exception("Couldn't read the file content");
+			}
 			fwrite($file, $content);
 		}
 		fclose($file);
@@ -134,8 +141,15 @@ class File
 		$numFailures = 0;
 
 		$file = fopen($path, "r");
+		if ($file === false) {
+			throw new Exception("Couldn't open the file");
+		}
+
 		while (!feof($file)) {
 			$content = fread($file, $this->partSize);
+			if ($content === false) {
+				throw new Exception("Couldn't read the file content");
+			}
 			do {
 				try {
 					$this->_write($content, $params);
