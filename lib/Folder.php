@@ -118,11 +118,11 @@ class Folder
 	/**
 	 * List root folders
 	 *
-	 * @return stdClass
+	 * @return array
 	 * @throws Exception
 	 * @noinspection PhpUnused
 	 */
-	public function listRoot(): stdClass
+	public function listRoot(): array
 	{
 		return $this->getContent(0);
 	}
