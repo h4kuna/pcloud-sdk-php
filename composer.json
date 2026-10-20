@@ -27,9 +27,11 @@
   },
   "scripts": {
     "qa": [
+      "@cs",
       "@stan",
       "@tests"
     ],
+    "cs": "vendor/bin/phpcs",
     "stan": "vendor/bin/phpstan analyse",
     "tests": "vendor/bin/phpunit test"
   }
