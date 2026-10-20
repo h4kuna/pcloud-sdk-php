@@ -125,9 +125,6 @@ class File
 		}
 
 		$upload = $this->_createUpload();
-		if (!is_object($upload)) {
-			throw new Exception('File -> upload -> "createUpload" not returning the expected data!');
-		}
 
 		$params = array(
 			"uploadid" => $upload->uploadid,
