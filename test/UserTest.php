@@ -9,7 +9,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "AssertsRequestUrl.php";
 /**
  * User tests
  */
-class UserTest extends TestCase
+final class UserTest extends TestCase
 {
 	use AssertsRequestUrl;
 

@@ -10,7 +10,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "MemoryStream.php";
 /**
  * File test
  */
-class FileTest extends TestCase
+final class FileTest extends TestCase
 {
 	use AssertsRequestUrl;
 

@@ -10,7 +10,7 @@ use stdClass;
 /**
  * Folder Class
  */
-class Folder
+final class Folder
 {
 
 	/**

@@ -10,7 +10,7 @@ use Throwable;
  * Local Exception handler
  * Overwrites the error code to 5000+
  */
-class Exception extends \Exception
+final class Exception extends \Exception
 {
 
 	/**

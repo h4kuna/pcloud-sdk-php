@@ -9,7 +9,7 @@ use stdClass;
 /**
  * User class
  */
-class User
+final class User
 {
 
 	/**

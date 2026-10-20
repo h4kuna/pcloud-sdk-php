@@ -9,7 +9,7 @@ use stdClass;
 /**
  * Main App class
  */
-class App
+final class App
 {
 	/**
 	 * App key. In https://docs.pcloud.com/my_apps/ you will find it also as "Client ID"

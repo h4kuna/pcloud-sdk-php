@@ -9,7 +9,7 @@ use stdClass;
 /**
  * Class Request
  */
-class Request
+final class Request
 {
 
 	/**

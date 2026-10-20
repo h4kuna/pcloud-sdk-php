@@ -10,7 +10,7 @@ use stdClass;
  * Class Response
  * The main purpose of this class is to organise the cURL response data into recognizable bundle
  */
-class Response
+final class Response
 {
 
 	/**

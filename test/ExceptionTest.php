@@ -10,7 +10,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . "ErrorCurl.php";
 /**
  * Exceptions triggering tests
  */
-class ExceptionTest extends TestCase
+final class ExceptionTest extends TestCase
 {
 
 	/**

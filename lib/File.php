@@ -11,7 +11,7 @@ use stdClass;
  *
  * this class provides API calls related to file manipulation
  */
-class File
+final class File
 {
 
 	/**

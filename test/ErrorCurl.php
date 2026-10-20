@@ -8,7 +8,7 @@ use pCloud\Sdk\Response;
 /**
  * Curl replacement, which answers every request with an error response of the pCloud API
  */
-class ErrorCurl extends Curl
+final class ErrorCurl extends Curl
 {
 
 	/**

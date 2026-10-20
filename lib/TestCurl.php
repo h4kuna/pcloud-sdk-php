@@ -11,7 +11,7 @@ use stdClass;
  *
  * @noinspection PhpUnused
  */
-class TestCurl extends Curl
+final class TestCurl extends Curl
 {
 
 	/**

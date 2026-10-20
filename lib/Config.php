@@ -9,7 +9,7 @@ namespace pCloud\Sdk;
  * Here you will find some basic API related configuration parameters.
  * They are provided and setup by pCloud, and shouldn't be modified.
  */
-class Config {
+final class Config {
 	
 	/**
 	 * @var string
