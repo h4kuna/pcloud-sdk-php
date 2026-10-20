@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use pCloud\Sdk\Curl;
 use pCloud\Sdk\Response;
 

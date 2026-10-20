@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Stream wrapper, which serves the content of $content instead of the real remote file
  */

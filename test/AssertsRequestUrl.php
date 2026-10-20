@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Assertions on the responses produced by pCloud\Sdk\TestCurl
  */
